@@ -1,5 +1,5 @@
 var connection = require('../mysql')
-var until = require('./../until')
+var until = require('../until')
 
 class User {
     constructor() {
