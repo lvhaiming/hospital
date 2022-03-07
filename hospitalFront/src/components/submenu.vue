@@ -10,38 +10,28 @@ export default {
     components: {
         submenuItem
     },
-    props: {
-        menu: {
-            type: Array,
-            default() {
-                return []
-            }
-        },
-        activeName: {
-            type: String,
-            default() {
-                return ''
-            }
-        }
-    },
+    props: {},
     data() {
         return {
+            menu: [],
             activeNames: ''
         }
     },
-    mounted() {
-        this.setMenuActive(this.activeName)
-    },
+    created() {
+        this.getMenus()},
     methods: {
         change(name) {
             this.$emit('changeItem', name)
         },
-        setMenuActive(name) {
-            this.activeNames = name
-            this.$nextTick(() => {
-                this.$refs.menu.updateOpened()
-                this.$refs.menu.updateActiveName()
-            })
+        getMenus() {
+            this.$http.post("getMenus",{ professional: '1' }).then((res) => {
+                this.menu = res.data.data;
+                this.$nextTick(() => {
+                    this.activeNames = this.$route.path.slice(1)
+                    this.$refs.menu.updateOpened()
+                    this.$refs.menu.updateActiveName()
+                })
+            });
         }
     }
 }

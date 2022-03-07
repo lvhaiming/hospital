@@ -87,7 +87,7 @@ class User {
     addUserData(req, res) {
         let body = req.body
 
-        let sql = `insert into user(name, age, sex, professional, department, time, native, tel, password) values('${body.name}', ${body.age}, ${body.sex}, ${body.professional}, ${body.department}, '${body.time}', '${body.native}', ${body.tel}, ${body.password});`
+        let sql = `insert into user(name, age, sex, professional, department, time, native, tel, password) values('${body.name}', ${body.age}, ${body.sex}, ${body.professional}, ${body.department}, '${body.time}', '${body.native}', ${body.tel}, '${body.password}');`
         this.connection.query(sql, (err, result) => {
             if (err) {
                 console.log(err)
@@ -108,7 +108,7 @@ class User {
     editUserData(req, res) {
         let body = req.body
 
-        let sql = `update user set name='${body.name}',age=${body.age},sex=${body.sex},professional=${body.professional},department=${body.department},time='${body.time}',native='${body.native}',tel=${body.tel},password=${body.password} where id=${body.id};`
+        let sql = `update user set name='${body.name}',age=${body.age},sex=${body.sex},professional=${body.professional},department=${body.department},time='${body.time}',native='${body.native}',tel=${body.tel},password='${body.password}' where id=${body.id};`
         this.connection.query(sql, (err, result) => {
             if (err) {
                 console.log(err)

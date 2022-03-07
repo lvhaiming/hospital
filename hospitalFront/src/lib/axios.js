@@ -7,6 +7,7 @@ Axios.interceptors.response.use(response => {
     return response;
 }, error => {
     Vue.prototype.$Message.error('请求失败，请联系管理员')
+    return error
 })
 
 export default Axios

@@ -47,7 +47,7 @@ export default {
                         } else {
                             this.$Message.success(res.data.msg);
                             sessionStorage.set('hospital_user', res.data)
-                            this.$router.push('/home')
+                            this.$router.push('/welcome')
                         }
                     })
                     // this.$Message.success('登录成功!');
