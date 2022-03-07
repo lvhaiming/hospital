@@ -42,19 +42,20 @@ class User {
     getUserData(req, res) {
         console.log('req :>> ', req.body);
         let body = req.body // 获取参数
-        let start = (body.pageNumber - 1) * body.pageSize
-        let end = body.pageNumber * body.pageSize
+        let start = (body.pageNumber - 1) * body.pageSize || 0
+        let end = body.pageSize || 10
         let params = {
-            name: body.name,
-            tel: body.tel,
-            professional: body.professional,
-            department: body.department
+            id: body.id || '',
+            name: body.name || '',
+            tel: body.tel || '',
+            professional: body.professional || '',
+            department: body.department || ''
         }
         let sql = until.params(params)
         console.log('start :>> ', start);
         console.log('end :>> ', end);
         let p = new Promise((resolve, reject) => {
-            this.connection.query(`select * from user ${sql} limit ${start},${end}`, (err, result) => {
+            this.connection.query(`select * from user ${sql} limit ${start},${end};`, (err, result) => {
                 if (err) {
                     console.log(err)
                 } else {
@@ -63,7 +64,7 @@ class User {
             })
         })
         p.then(data => {
-            this.connection.query("select count(name) as total from user", (err, result) => {
+            this.connection.query(`select count(name) as total from user ${sql};`, (err, result) => {
                 if (err) {
                     console.log(err)
                 } else {
@@ -86,10 +87,14 @@ class User {
     addUserData(req, res) {
         let body = req.body
 
-        let sql = `insert into user(name, age, sex, professional, department, time, native, tel, password) values(${body.name}, ${body.age}, ${body.sex}, ${body.professional}, ${body.department}, ${body.time}, ${body.native}, ${body.tel}, ${body.password}});`
+        let sql = `insert into user(name, age, sex, professional, department, time, native, tel, password) values('${body.name}', ${body.age}, ${body.sex}, ${body.professional}, ${body.department}, '${body.time}', '${body.native}', ${body.tel}, ${body.password});`
         this.connection.query(sql, (err, result) => {
             if (err) {
                 console.log(err)
+                res.send({
+                    code: err.errno,
+                    msg: '新增失败，手机号码已存在'
+                })
             } else {
                 res.send({
                     code: '0000',
@@ -97,54 +102,27 @@ class User {
                 })
             }
         })
-        // let insertData = () => {
-        //     let p = new Promise((resolve, reject) => {
-        //         let sql = `insert into user(name, age, sex, professional, department, time, native, tel, password) values(${body.name}, ${body.age}, ${body.sex}, ${body.professional}, ${body.department}, ${body.time}, ${body.native}, ${body.tel}, ${body.password}});`
-        //         this.connection.query(sql, (err, result) => {
-        //             if (err) {
-        //                 console.log(err)
-        //             } else {
-        //                 resolve(result)
-        //             }
-        //         })
-        //     })
-        //     return p
-        // }
+    }
 
-        // let deleteId = () => {
-        //     let p = new Promise((resolve, reject) => {
-        //         let sql = `alter table user drop column id;`
-        //         this.connection.query(sql, (err, result) => {
-        //             if (err) {
-        //                 console.log(err)
-        //             } else {
-        //                 resolve(result)
-        //             }
-        //         })
-        //     })
-        //     return p
-        // }
+    // 人员管理-用户管理-编辑用户信息
+    editUserData(req, res) {
+        let body = req.body
 
-        // let addId = () => {
-        //     let p = new Promise((resolve, reject) => {
-        //         let sql = `alter table user add id int(11) not null primary key auto_increment first;`
-        //         this.connection.query(sql, (err, result) => {
-        //             if (err) {
-        //                 console.log(err)
-        //             } else {
-        //                 resolve(result)
-        //             }
-        //         })
-        //     })
-        //     return p
-        // }
-
-        // Promise.all([insertData, deleteId, addId]).then((resolve, reject) => {
-        //     res.send({
-        //         code: '0000',
-        //         msg: '新增成功'
-        //     })
-        // })
+        let sql = `update user set name='${body.name}',age=${body.age},sex=${body.sex},professional=${body.professional},department=${body.department},time='${body.time}',native='${body.native}',tel=${body.tel},password=${body.password} where id=${body.id};`
+        this.connection.query(sql, (err, result) => {
+            if (err) {
+                console.log(err)
+                res.send({
+                    code: err.errno,
+                    msg: '修改失败'
+                })
+            } else {
+                res.send({
+                    code: '0000',
+                    msg: '修改成功'
+                })
+            }
+        })
     }
 
     // 人员管理-用户管理-删除用户信息

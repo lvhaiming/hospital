@@ -12,7 +12,6 @@ export default {
       // 监听路由变化，防止浏览器输入地址，没登录就直接进入页面
       $route: {
         handler: function(val, oldVal){
-            console.log(val);
             if (val.name === 'login') {
                 sessionStorage.clear()
             } else {

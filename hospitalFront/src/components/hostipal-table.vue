@@ -4,6 +4,7 @@
           <Table border :columns="columns" :data="data"></Table>
           <Page
             class="page"
+            :current.sync="page.pageNumber"
             :total="page.totalCount"
             :page-size="page.pageSize"
             show-total
@@ -43,7 +44,8 @@ export default {
     },
     methods: {
         pageNoChange(pageNo) {
-            this.$emit('changeNo', pageNo)
+            this.page.pageNumber = pageNo
+            this.$emit('changeNo', false)
         }
     }
 }

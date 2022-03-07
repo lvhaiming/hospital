@@ -5,7 +5,7 @@
             <FormItem label="用户名称">
                 <Input v-model="form.name" />
             </FormItem>
-            <FormItem label="电话">
+            <FormItem label="手机号码">
                 <Input v-model="form.tel" />
             </FormItem>
             <FormItem label="职称">
@@ -19,7 +19,7 @@
                 </Select>
             </FormItem>
             <FormItem>
-                <Button @click="search()" icon="md-search" type="primary">
+                <Button @click="search(true)" icon="md-search" type="primary">
                     查询
                 </Button>
             </FormItem>
@@ -28,7 +28,7 @@
             新增
         </Button>
         <HosTable
-            @changeNo="changeNo"
+            @changeNo="search"
             :page="page"
             :columns="columns"
             :data="data"
@@ -37,8 +37,8 @@
 </template>
 
 <script>
-import { SEX, PROFESSIONAL, DEPARTMENT } from "./../../lib/enums";
-import { dateFormat } from "./../../lib/date";
+import { SEX, PROFESSIONAL, DEPARTMENT } from "../../../lib/enums";
+import { dateFormat } from "../../../lib/date";
 export default {
     data() {
         return {
@@ -72,7 +72,7 @@ export default {
                     },
                 },
                 {
-                    title: "电话",
+                    title: "手机号码",
                     key: "tel",
                     width: 140,
                 },
@@ -130,7 +130,7 @@ export default {
                                     },
                                     on: {
                                         click: () => {
-                                            console.log("编辑");
+                                            this.$router.push({ path: '/personnel/user/edit', query: { id: params.row.id } })
                                         },
                                     },
                                 },
@@ -167,16 +167,18 @@ export default {
         this.changeData()
     },
     methods: {
-        add() {},
-        search() {
+        add() {
+            this.$router.push('/personnel/user/add')
+        },
+        search(flag) {
+            if (flag) {
+                this.page.pageNumber = 1
+            }
             this.$http.post("/user/getUserData", Object.assign(this.form, this.page)).then((res) => {
                 this.data = res.data.data;
                 this.page = res.data.page;
             });
-        },
-        changeNo(pageNo) {
-            this.page.pageNumber = pageNo;
-            this.search();
+            console.log('this.page :>> ', this.page);
         },
         delete(row) {
             this.$Modal.confirm({
@@ -187,7 +189,7 @@ export default {
                     this.$http.post('/user/deleteUserData', { id: row.id }).then(res => {
                         this.$Message.success(res.data.msg);
                         // 保存成功信息提示
-                        this.search()
+                        this.search(true)
                     }).catch(() => {})
                 },
             });

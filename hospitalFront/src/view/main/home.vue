@@ -33,7 +33,7 @@ export default {
                     title: '人员管理',
                     children: [
                         {
-                            name: 'personnel/user',
+                            name: 'personnel/user/list',
                             title: '用户管理'
                         },
                         {
@@ -133,7 +133,7 @@ export default {
     created() {
         let active =  sessionStorage.get('menu_item')
         this.activeName = active ? active : this.menu[0].children[0].name
-        this.change(this.activeName)
+        // this.change(this.activeName)
     },
     methods: {
         collapsedSider () {
