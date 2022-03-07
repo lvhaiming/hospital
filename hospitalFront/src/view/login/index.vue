@@ -34,6 +34,8 @@ export default {
         }
     },
     created() {
+        var a = '123'
+        console.log(a)
         sessionStorage.clear()
     },
     methods: {
