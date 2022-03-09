@@ -14,6 +14,7 @@ export const PROFESSIONAL = {
     '23': '主管护师',
     '24': '护师',
     '25': '护士',
+    '99': '病患'
 }
 
 export const DEPARTMENT = {

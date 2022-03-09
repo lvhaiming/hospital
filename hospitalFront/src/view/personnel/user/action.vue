@@ -21,7 +21,7 @@
             </FormItem>
             <FormItem label="职称" prop="professional">
                 <Select clearable v-model="form.professional" style="width:150px">
-                    <Option v-for="item in professional" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                    <Option v-for="item in professional.filter(i => { return i.value !== '99'})" :value="item.value" :key="item.value">{{ item.label }}</Option>
                 </Select>
             </FormItem>
             <FormItem label="所在科室" prop="department">

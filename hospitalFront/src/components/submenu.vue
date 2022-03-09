@@ -6,6 +6,7 @@
 
 <script>
 import submenuItem from './submenu-item.vue'
+import { sessionStorage } from '@/lib/until'
 export default {
     components: {
         submenuItem
@@ -24,7 +25,7 @@ export default {
             this.$emit('changeItem', name)
         },
         getMenus() {
-            this.$http.post("getMenus",{ professional: '1' }).then((res) => {
+            this.$http.post("getMenus",{ professional: sessionStorage.get('hospital_user').professional }).then((res) => {
                 this.menu = res.data.data;
                 this.$nextTick(() => {
                     this.activeNames = this.$route.path.slice(1)
