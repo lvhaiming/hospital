@@ -16,7 +16,7 @@ Axios.interceptors.response.use(response => {
     Vue.prototype.$Loading.finish()
     return response;
 }, error => {
-    Vue.prototype.$Loading.finish()
+    Vue.prototype.$Loading.error()
     Vue.prototype.$Message.error('请求失败，请联系管理员')
     return error
 })
