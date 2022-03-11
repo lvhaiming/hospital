@@ -22,13 +22,20 @@ export default {
         this.getMenus()},
     methods: {
         change(name) {
-            this.$emit('changeItem', name)
+            this.$router.push(`/${name}`)
+            sessionStorage.set('hospital_menu', `${name}`)
         },
         getMenus() {
             this.$http.post("getMenus",{ professional: sessionStorage.get('hospital_user').professional }).then((res) => {
                 this.menu = res.data.data;
+                var routerList = []
+                this.menu.forEach(item => {
+                    item.children.forEach(element => {
+                        routerList.push(element.name)
+                    })
+                });
                 this.$nextTick(() => {
-                    this.activeNames = this.$route.path.slice(1)
+                    this.activeNames = routerList.indexOf(this.$route.path.slice(1)) > -1 ? this.$route.path.slice(1) : sessionStorage.get('hospital_menu')
                     this.$refs.menu.updateOpened()
                     this.$refs.menu.updateActiveName()
                 })

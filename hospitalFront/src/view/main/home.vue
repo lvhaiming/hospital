@@ -2,7 +2,7 @@
   <div class="layout">
     <Layout>
         <Sider ref="side1">
-            <submenu @changeItem="change"></submenu>
+            <submenu></submenu>
         </Sider>
         <Layout>
             <Header class="layout-header-bar">
@@ -30,12 +30,7 @@ export default {
     created() {
         
     },
-    methods: {
-        change(name) {
-            this.$router.push(`/${name}`)
-        },
-        
-    },
+    methods: {},
 }
 </script>
 
