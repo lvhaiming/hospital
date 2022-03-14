@@ -51,9 +51,7 @@ class User {
             professional: body.professional || '',
             department: body.department || ''
         }
-        let sql = until.params(params)
-        console.log('start :>> ', start);
-        console.log('end :>> ', end);
+        let sql = until.params(params, 'name')
         let p = new Promise((resolve, reject) => {
             this.connection.query(`select * from user ${sql} limit ${start},${end};`, (err, result) => {
                 if (err) {
