@@ -55,6 +55,7 @@ export default {
     border-radius: 4px;
     margin: 16px;
     background-color: #fff;
+    overflow-y: scroll;
 }
 .ivu-layout-header {
     display: flex;
