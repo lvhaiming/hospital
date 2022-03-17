@@ -5,7 +5,8 @@ import Welcome from '@/view/login/welcome.vue'
 import Login from '@/view/login/index.vue'
 import User from '@/view/personnel/user/list.vue'
 import UserAction from '@/view/personnel/user/action.vue'
-import Auth from '@/view/personnel/auth.vue'
+import Auth from '@/view/personnel/auth/list.vue'
+import AuthAction from '@/view/personnel/auth/action.vue'
 
 Vue.use(Router)
 
@@ -39,16 +40,16 @@ export default new Router({
             name: 'personnel_user_action',
             component: UserAction
         },
-        {
-            path: '/personnel/auth',
-            name: 'personnel_auth',
-            component: Auth
-        },
             // 权限管理
         {
             path: '/personnel/auth/list',
-            name: 'personnel_user',
-            component: User,
+            name: 'personnel_auth',
+            component: Auth,
+        },
+        {
+            path: '/personnel/auth/action',
+            name: 'personnel_auth_action',
+            component: AuthAction,
         },
       ]
     }

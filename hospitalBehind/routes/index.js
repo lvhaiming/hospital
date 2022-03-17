@@ -8,6 +8,10 @@ var editUserData = require('./user/edit');
 var deleteUserData = require('./user/delete');
 
 var getMenus = require('./getMenus/getmenus');
+var getAllMenus = require('./getMenus/getAllMenus');
+var getPersonal = require('./getMenus/getPersonal');
+var getPersonalTree = require('./getMenus/getPersonalTree');
+var updateAuth = require('./getMenus/updateAuth');
 
 
 app.use('/login', login);
@@ -17,5 +21,9 @@ app.use('/user/editUserData', editUserData);
 app.use('/user/deleteUserData', deleteUserData);
 
 app.use('/getMenus', getMenus);
+app.use('/getAllMenus', getAllMenus);
+app.use('/getPersonal', getPersonal);
+app.use('/getPersonalTree', getPersonalTree);
+app.use('/updateAuth', updateAuth);
 
 module.exports = app;
