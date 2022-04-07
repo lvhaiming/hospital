@@ -160,6 +160,9 @@ export default {
         this.search();
         this.changeData()
     },
+    activated () {
+        this.search();
+    },
     methods: {
         add() {
             this.$router.push('/patient/patient/add')

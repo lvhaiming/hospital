@@ -31,6 +31,11 @@
                     </FormItem>
                 </Col>
                 <Col span="8">
+                    <FormItem label="工号" prop="jobNum">
+                        <Input v-model="form.jobNum" :maxlength="8" />
+                    </FormItem>
+                </Col>
+                <Col span="8">
                     <FormItem label="职称" prop="professional">
                         <Select clearable v-model="form.professional" style="width:150px">
                             <Option v-for="item in professional.filter(i => { return i.value !== '99'})" :value="item.value" :key="item.value">{{ item.label }}</Option>
@@ -88,6 +93,7 @@ export default {
                 age: '',
                 sex: '',
                 tel: '',
+                jobNum: '',
                 professional: '',
                 department: '',
                 time: '',
@@ -134,6 +140,22 @@ export default {
                         }
                     }
                 ],
+                jobNum: [
+                    { required: true, message: '工号不能为空' },
+                    {
+                        message: '请输入正确的八位工号',
+                        trigger: 'blur',
+                        validator(rule, value, callback) {
+                            if (value) {
+                                if (/\d{8}$/.test(value)) {
+                                    callback()
+                                } else {
+                                    return callback(new Error(rule.message))
+                                }
+                            }
+                        }
+                    }
+                ],
                 professional: [{ required: true, message: '请选择职称' }],
                 department: [{ required: true, message: '请选择所在科室' }],
                 time: [{ required: true, message: '请选择入职时间' }],
@@ -162,6 +184,7 @@ export default {
             this.$refs.message.validate((valid) => {
                 if (valid) {
                     this.form.time = dateFormat(this.form.time)
+                    this.form.jobNum = Number(this.form.jobNum)
                     let http = ''
                     if (this.modal) {
                         http = '/user/addUserData'

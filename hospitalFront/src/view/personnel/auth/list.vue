@@ -85,6 +85,9 @@ export default {
         this.search();
         this.changeData()
     },
+    activated () {
+        this.search();
+    },
     methods: {
         search(flag) {
             if (flag) {

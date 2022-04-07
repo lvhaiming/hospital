@@ -8,6 +8,9 @@
             <FormItem label="手机号码">
                 <Input v-model="form.tel" />
             </FormItem>
+            <FormItem label="工号">
+                <Input v-model="form.jobNum" />
+            </FormItem>
             <FormItem label="职称">
                 <Select clearable v-model="form.professional" style="width:150px">
                     <Option v-for="item in professional.filter(i => { return i.value !== '99'})" :value="item.value" :key="item.value">{{ item.label }}</Option>
@@ -45,6 +48,7 @@ export default {
             form: {
                 name: '',
                 tel: '',
+                jobNum: '',
                 professional: '',
                 department: ''
             },
@@ -72,6 +76,10 @@ export default {
                 {
                     title: "手机号码",
                     key: "tel"
+                },
+                {
+                    title: "工号",
+                    key: "jobNum"
                 },
                 {
                     title: "职称",
@@ -159,6 +167,9 @@ export default {
     created() {
         this.search();
         this.changeData()
+    },
+    activated () {
+        this.search();
     },
     methods: {
         add() {

@@ -9,7 +9,13 @@ class User {
     // 登录
     login(req, res) {
         let body = req.body
-        this.connection.query(`select name,professional,tel,password from user where tel=${body.username}`, (err, result) => {
+        let sql = ''
+        if (body.username.length == 8) {
+            sql = `select name,professional,tel,password from user where jobNum=${body.username}`
+        } else {
+            sql = `select name,professional,tel,password from user where tel=${body.username}`
+        }
+        this.connection.query(sql, (err, result) => {
             if (err) {
                 console.log(err)
             } else {
@@ -40,7 +46,6 @@ class User {
 
     // 人员管理-用户管理-获取用户信息
     getUserData(req, res) {
-        console.log('req :>> ', req.body);
         let body = req.body // 获取参数
         let start = (body.pageNumber - 1) * body.pageSize || 0
         let end = body.pageSize || 10
@@ -48,6 +53,7 @@ class User {
             id: body.id || '',
             name: body.name || '',
             tel: body.tel || '',
+            jobNum: body.jobNum || '',
             professional: body.professional || '',
             department: body.department || ''
         }
@@ -93,15 +99,22 @@ class User {
             time: body.time || '',
             native: body.native || '',
             tel: body.tel || '',
+            jobNum: body.jobNum || '',
             password: body.password || '',
         }
         let sql = until.add(params)
         this.connection.query(`insert into user${sql};`, (err, result) => {
             if (err) {
                 console.log(err)
+                let ms = ''
+                if (err.sqlMessage.indexOf('jobNum') > -1) {
+                    ms = '工号'
+                } else {
+                    ms = '手机号号'
+                }
                 res.send({
                     code: err.errno,
-                    msg: '新增失败，手机号码已存在'
+                    msg: `新增失败，${ms}已存在`
                 })
             } else {
                 res.send({
@@ -124,6 +137,7 @@ class User {
             time: body.time || '',
             native: body.native || '',
             tel: body.tel || '',
+            jobNum: body.jobNum || '',
             password: body.password || '',
         }
         let sql = until.update(params)
