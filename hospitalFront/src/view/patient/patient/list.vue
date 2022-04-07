@@ -1,17 +1,12 @@
 <template>
     <section class="content">
-        <h3 class="page-title">用户管理</h3>
+        <h3 class="page-title">病患管理</h3>
         <Form :model="form" :label-width="90" inline>
-            <FormItem label="用户名称">
+            <FormItem label="病患姓名">
                 <Input v-model="form.name" />
             </FormItem>
             <FormItem label="手机号码">
                 <Input v-model="form.tel" />
-            </FormItem>
-            <FormItem label="职称">
-                <Select clearable v-model="form.professional" style="width:150px">
-                    <Option v-for="item in professional.filter(i => { return i.value !== '99'})" :value="item.value" :key="item.value">{{ item.label }}</Option>
-                </Select>
             </FormItem>
             <FormItem label="所在科室">
                 <Select clearable v-model="form.department" style="width:150px">
@@ -55,8 +50,8 @@ export default {
             },
             columns: [
                 {
-                    title: "用户名称",
-                    key: "name",
+                    title: "病患姓名",
+                    key: "name"
                 },
                 {
                     title: "年龄",
@@ -70,19 +65,12 @@ export default {
                     },
                 },
                 {
-                    title: "手机号码",
-                    key: "tel"
+                    title: "籍贯",
+                    key: "native"
                 },
                 {
-                    title: "职称",
-                    key: "professional",
-                    render: (h, params) => {
-                        return h(
-                            "span",
-                            {},
-                            PROFESSIONAL[params.row.professional]
-                        );
-                    },
+                    title: "手机号码",
+                    key: "tel"
                 },
                 {
                     title: "所在科室",
@@ -92,24 +80,36 @@ export default {
                     },
                 },
                 {
-                    title: "入职时间",
-                    key: "time",
+                    title: "入院时间",
+                    key: "startTime",
                     render: (h, params) => {
                         return h(
                             "span",
                             {},
-                            dateFormat(params.row.time, "yyyy-MM-dd")
+                            dateFormat(params.row.startTime, "yyyy-MM-dd")
                         );
                     },
                 },
                 {
-                    title: "籍贯",
-                    key: "native"
+                    title: "出院时间",
+                    key: "endTime",
+                    render: (h, params) => {
+                        return h(
+                            "span",
+                            {},
+                            dateFormat(params.row.endTime, "yyyy-MM-dd")
+                        );
+                    },
+                },
+                {
+                    title: "主治医师",
+                    key: "doctor"
                 },
                 {
                     title: "操作",
                     key: "action",
                     fixed: "right",
+                    width: 140,
                     render: (h, params) => {
                         return h("div", [
                             h(
@@ -124,7 +124,7 @@ export default {
                                     },
                                     on: {
                                         click: () => {
-                                            this.$router.push({ path: '/personnel/user/edit', query: { id: params.row.id } })
+                                            this.$router.push({ path: '/patient/patient/edit', query: { id: params.row.id } })
                                         },
                                     },
                                 },
@@ -162,13 +162,13 @@ export default {
     },
     methods: {
         add() {
-            this.$router.push('/personnel/user/add')
+            this.$router.push('/patient/patient/add')
         },
         search(flag) {
             if (flag) {
                 this.page.pageNumber = 1
             }
-            this.$http.post("/user/getUserData", Object.assign(this.form, this.page)).then((res) => {
+            this.$http.post("/patient/getPatientData", Object.assign(this.form, this.page)).then((res) => {
                 this.data = res.data.data;
                 this.page = res.data.page;
             });
@@ -180,7 +180,7 @@ export default {
                 content: `确认删除${row.name}的信息？`,
                 cancelText: "取消",
                 onOk: () => {
-                    this.$http.post('/user/deleteUserData', { id: row.id }).then(res => {
+                    this.$http.post('/patient/deletePatientData', { id: row.id }).then(res => {
                         this.$Message.success(res.data.msg);
                         // 保存成功信息提示
                         this.search(true)

@@ -143,6 +143,13 @@ class User {
         let body = req.body
         let professional = body.professional
         let auth = body.auth
+        if (professional == '1') {
+            res.send({
+                code: '',
+                msg: '修改失败，此权限不可修改'
+            })
+            return
+        }
         this.connection.query(`update professional set professional_auth='${auth}' where professional_id='${professional}';`, (err, result) => {
             if (err) {
                 console.log(err)

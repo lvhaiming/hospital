@@ -25,3 +25,8 @@ export const DEPARTMENT = {
     '5': '妇产科',
     '6': '肿瘤科'
 }
+
+export const CATEGORY = {
+    '1': '自费',
+    '2': '医保',
+}

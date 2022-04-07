@@ -1,48 +1,70 @@
 <template>
     <section class="content">
         <h3 class="page-title">{{ modal ? '新增用户' : '编辑用户' }}</h3>
-        <Form :model="form" :label-width="150" ref="message" style="margin-top: 20px;width: 400px;" :rules="formRules">
-            <FormItem label="用户名称" prop="name">
-                <Input v-model="form.name" />
-            </FormItem>
-            <FormItem label="登录密码" prop="password">
-                <Input v-model="form.password" />
-            </FormItem>
-            <FormItem label="年龄" prop="age">
-                <Input v-model="form.age" />
-            </FormItem>
-            <FormItem label="性别" prop="sex">
-                <Select clearable v-model="form.sex" style="width:150px">
-                    <Option v-for="item in sex" :value="item.value" :key="item.value">{{ item.label }}</Option>
-                </Select>
-            </FormItem>
-            <FormItem label="手机号码" prop="tel">
-                <Input v-model="form.tel" :maxlength="11" />
-            </FormItem>
-            <FormItem label="职称" prop="professional">
-                <Select clearable v-model="form.professional" style="width:150px">
-                    <Option v-for="item in professional.filter(i => { return i.value !== '99'})" :value="item.value" :key="item.value">{{ item.label }}</Option>
-                </Select>
-            </FormItem>
-            <FormItem label="所在科室" prop="department">
-                <Select clearable v-model="form.department" style="width:150px">
-                    <Option v-for="item in department" :value="item.value" :key="item.value">{{ item.label }}</Option>
-                </Select>
-            </FormItem>
-            <FormItem label="入职时间" prop="time">
-                <DatePicker v-model="form.time" type="date" placeholder="Select date" style="width: 200px"></DatePicker>
-            </FormItem>
-            <FormItem label="籍贯" prop="native">
-                <Input v-model="form.native" />
-            </FormItem>
-            <FormItem>
-                <Button @click="cancel" style="margin-right: 20px;">
-                    取消
-                </Button>
-                <Button @click="submit" type="primary">
-                    确定
-                </Button>
-            </FormItem>
+        <Form :model="form" :label-width="150" ref="message" style="margin-top: 20px;" :rules="formRules">
+            <Row>
+                <Col span="8">
+                    <FormItem label="用户名称" prop="name">
+                        <Input v-model="form.name" />
+                    </FormItem>
+                </Col>
+                <Col span="8">
+                    <FormItem label="登录密码" prop="password">
+                        <Input v-model="form.password" />
+                    </FormItem>
+                </Col>
+                <Col span="8">
+                    <FormItem label="年龄" prop="age">
+                        <Input v-model="form.age" />
+                    </FormItem>
+                </Col>
+                <Col span="8">
+                    <FormItem label="性别" prop="sex">
+                        <Select clearable v-model="form.sex" style="width:150px">
+                            <Option v-for="item in sex" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                        </Select>
+                    </FormItem>
+                </Col>
+                <Col span="8">
+                    <FormItem label="手机号码" prop="tel">
+                        <Input v-model="form.tel" :maxlength="11" />
+                    </FormItem>
+                </Col>
+                <Col span="8">
+                    <FormItem label="职称" prop="professional">
+                        <Select clearable v-model="form.professional" style="width:150px">
+                            <Option v-for="item in professional.filter(i => { return i.value !== '99'})" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                        </Select>
+                    </FormItem>
+                </Col>
+                <Col span="8">
+                    <FormItem label="所在科室" prop="department">
+                        <Select clearable v-model="form.department" style="width:150px">
+                            <Option v-for="item in department" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                        </Select>
+                    </FormItem>
+                </Col>
+                <Col span="8">
+                    <FormItem label="入职时间" prop="time">
+                        <DatePicker v-model="form.time" type="date" :options="options" placeholder="Select date" style="width: 200px"></DatePicker>
+                    </FormItem>
+                </Col>
+                <Col span="8">
+                    <FormItem label="籍贯" prop="native">
+                        <Input v-model="form.native" />
+                    </FormItem>
+                </Col>
+                <Col span="8">
+                    <FormItem>
+                        <Button @click="cancel" style="margin-right: 20px;">
+                            取消
+                        </Button>
+                        <Button @click="submit" type="primary">
+                            确定
+                        </Button>
+                    </FormItem>
+                </Col>
+            </Row>
         </Form>
     </section>
 </template>
@@ -70,6 +92,11 @@ export default {
                 department: '',
                 time: '',
                 native: '',
+            },
+            options: {
+                disabledDate (date) {
+                    return date && date.valueOf() > Date.now();
+                }
             },
             formRules: {
                 name: [{ required: true, message: '用户名称不能为空' }],
