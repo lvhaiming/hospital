@@ -3,7 +3,7 @@
         <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="80">
             <h1>医院信息管理平台</h1>
             <FormItem label="用户名" prop="username">
-                <Input v-model="formValidate.username" placeholder="请输入用户名"></Input>
+                <Input v-model="formValidate.username" placeholder="请输入工号或者手机号"></Input>
             </FormItem>
             <FormItem label="密码" prop="password">
                 <Input v-model="formValidate.password" placeholder="请输入密码" type="password"></Input>

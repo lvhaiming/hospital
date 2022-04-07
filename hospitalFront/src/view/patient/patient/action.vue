@@ -62,11 +62,7 @@
                         <Input v-model="form.doctor" />
                     </FormItem>
                 </Col>
-                <Col span="8">
-                    <FormItem label="诊断描述" prop="diagnosis">
-                        <Input v-model="form.diagnosis" />
-                    </FormItem>
-                </Col>
+                
                 <Col span="8">
                     <FormItem label="费别" prop="category">
                         <Select clearable v-model="form.category" style="width:150px">
@@ -77,6 +73,26 @@
                 <Col span="8">
                     <FormItem label="费用" prop="cost">
                         <Input v-model="form.cost" />
+                    </FormItem>
+                </Col>
+                <Col span="8">
+                    <FormItem label="诊断描述" prop="diagnosis">
+                        <Input v-model="form.diagnosis" type="textarea" />
+                    </FormItem>
+                </Col>
+                <Col span="8">
+                    <FormItem label="用药">
+                        <Input v-model="form.drugs" type="textarea" />
+                    </FormItem>
+                </Col>
+                <Col span="8">
+                    <FormItem label="备注">
+                        <Input v-model="form.remarks" type="textarea"/>
+                    </FormItem>
+                </Col>
+                <Col span="8">
+                    <FormItem label="医嘱">
+                        <Input v-model="form.advice" type="textarea"/>
                     </FormItem>
                 </Col>
                 <Col span="8">
@@ -125,7 +141,12 @@ export default {
         address: "",
         doctor: "",
         diagnosis: "",
-        cost: ""
+        cost: "",
+        advice: '',
+        remarks: '',
+        drugs: '',
+        idCard: '',
+        category: ''
       },
       formRules: {
         name: [{ required: true, message: "用户名称不能为空" }],

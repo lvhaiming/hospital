@@ -60,6 +60,15 @@ class Patient {
             endTime: body.endTime || '',
             native: body.native || '',
             tel: body.tel || '',
+            address: body.address || "",
+            doctor: body.doctor || "",
+            diagnosis: body.diagnosis || "",
+            cost: body.cost || "",
+            advice: body.advice || '',
+            remarks: body.remarks || '',
+            drugs: body.drugs || '',
+            idCard: body.idCard || '',
+            category: body.category || ''
         }
         
         let sql = until.add(params)
@@ -91,6 +100,15 @@ class Patient {
             endTime: body.endTime || '',
             native: body.native || '',
             tel: body.tel || '',
+            address: body.address || "",
+            doctor: body.doctor || "",
+            diagnosis: body.diagnosis || "",
+            cost: body.cost || "",
+            advice: body.advice || '',
+            remarks: body.remarks || '',
+            drugs: body.drugs || '',
+            idCard: body.idCard || '',
+            category: body.category || ''
         }
         
         let sql = until.update(params)
