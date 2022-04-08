@@ -115,7 +115,7 @@ export default {
                     title: "操作",
                     key: "action",
                     fixed: "right",
-                    width: 140,
+                    width: 80,
                     render: (h, params) => {
                         return h("div", [
                             h(
@@ -136,21 +136,21 @@ export default {
                                 },
                                 "编辑"
                             ),
-                            h(
-                                "Button",
-                                {
-                                    props: {
-                                        type: "error",
-                                        size: "small",
-                                    },
-                                    on: {
-                                        click: () => {
-                                            this.delete(params.row);
-                                        },
-                                    },
-                                },
-                                "删除"
-                            ),
+                            // h(
+                            //     "Button",
+                            //     {
+                            //         props: {
+                            //             type: "error",
+                            //             size: "small",
+                            //         },
+                            //         on: {
+                            //             click: () => {
+                            //                 this.delete(params.row);
+                            //             },
+                            //         },
+                            //     },
+                            //     "删除"
+                            // ),
                         ]);
                     },
                 },
