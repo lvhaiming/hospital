@@ -41,7 +41,8 @@ export default {
                 name: '',
                 tel: '',
                 professional: '',
-                department: ''
+                department: '',
+                checkStatus: '1'
             },
             page: {
                 pageNumber: 1,
