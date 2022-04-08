@@ -1,21 +1,21 @@
 <template>
     <section class="content">
-        <h3 class="page-title">{{ modal ? '新增病患' : '编辑病患' }}</h3>
+        <h3 class="page-title">{{ modal ? '新增挂号' : '编辑挂号' }}</h3>
         <Form :model="form" :label-width="150" ref="message" style="margin-top: 20px;" :rules="formRules" inline>
             <Row>
                 <Col span="8">
                     <FormItem label="病患姓名" prop="name">
-                        <Input v-model="form.name" disabled />
+                        <Input v-model="form.name" />
                     </FormItem>
                 </Col>
                 <Col span="8">
                     <FormItem label="年龄" prop="age">
-                        <Input v-model="form.age" disabled />
+                        <Input v-model="form.age" />
                     </FormItem>
                 </Col>
                 <Col span="8">
                     <FormItem label="性别" prop="sex">
-                        <Select clearable disabled v-model="form.sex" style="width:150px">
+                        <Select clearable v-model="form.sex" style="width:150px">
                             <Option v-for="item in sex" :value="item.value" :key="item.value">{{ item.label }}</Option>
                         </Select>
                     </FormItem>
@@ -27,34 +27,19 @@
                 </Col>
                 <Col span="8">
                     <FormItem label="证件号" prop="idCard">
-                        <Input v-model="form.idCard" :maxlength="18" disabled />
+                        <Input v-model="form.idCard" :maxlength="18" />
                     </FormItem>
                 </Col>
                 <Col span="8">
                     <FormItem label="所在科室" prop="department">
-                        <Select clearable disabled v-model="form.department" style="width:150px">
+                        <Select clearable v-model="form.department" style="width:150px" @on-change="changeDepartment">
                             <Option v-for="item in department" :value="item.value" :key="item.value">{{ item.label }}</Option>
                         </Select>
                     </FormItem>
                 </Col>
                 <Col span="8">
-                    <FormItem label="籍贯" prop="native">
-                        <Input v-model="form.native" />
-                    </FormItem>
-                </Col>
-                <Col span="8">
-                    <FormItem label="居住地址" prop="address">
-                        <Input v-model="form.address" />
-                    </FormItem>
-                </Col>
-                <Col span="8">
                     <FormItem label="入院时间" prop="startTime">
                         <DatePicker v-model="form.startTime" type="date" :options="options" placeholder="Select date" style="width: 200px"></DatePicker>
-                    </FormItem>
-                </Col>
-                <Col span="8">
-                    <FormItem label="出院时间" prop="endTime">
-                        <DatePicker v-model="form.endTime" type="date" :options="options" placeholder="Select date" style="width: 200px"></DatePicker>
                     </FormItem>
                 </Col>
                 <Col span="8">
@@ -64,10 +49,9 @@
                         </Select>
                     </FormItem>
                 </Col>
-                
                 <Col span="8">
                     <FormItem label="费别" prop="category">
-                        <Select clearable disabled v-model="form.category" style="width:150px">
+                        <Select clearable v-model="form.category" style="width:150px">
                             <Option v-for="item in category" :value="item.value" :key="item.value">{{ item.label }}</Option>
                         </Select>
                     </FormItem>
@@ -78,23 +62,11 @@
                     </FormItem>
                 </Col>
                 <Col span="8">
-                    <FormItem label="诊断描述" prop="diagnosis">
-                        <Input v-model="form.diagnosis" type="textarea" />
-                    </FormItem>
-                </Col>
-                <Col span="8">
-                    <FormItem label="用药">
-                        <Input v-model="form.drugs" type="textarea" />
-                    </FormItem>
-                </Col>
-                <Col span="8">
-                    <FormItem label="备注">
-                        <Input v-model="form.remarks" type="textarea"/>
-                    </FormItem>
-                </Col>
-                <Col span="8">
-                    <FormItem label="医嘱">
-                        <Input v-model="form.advice" type="textarea"/>
+                    <FormItem label="状态" prop="checkStatus">
+                        <Select v-model="form.checkStatus" style="width:150px">
+                            <Option value="1" key="checkStatus1">挂号</Option>
+                            <Option value="2" key="checkStatus2">退号</Option>
+                        </Select>
                     </FormItem>
                 </Col>
                 <Col span="8">
@@ -139,17 +111,10 @@ export default {
         tel: "",
         department: "",
         startTime: "",
-        endTime: "",
-        native: "",
-        address: "",
         doctor: "",
-        diagnosis: "",
-        cost: "",
-        advice: '',
-        remarks: '',
-        drugs: '',
         idCard: '',
-        category: ''
+        category: '',
+        cost: ''
       },
       formRules: {
         name: [{ required: true, message: "用户名称不能为空" }],
@@ -190,10 +155,7 @@ export default {
         department: [{ required: true, message: "请选择所在科室" }],
         category: [{ required: true, message: "请选择费别" }],
         startTime: [{ required: true, message: "请选择入院时间" }],
-        native: [{ required: true, message: "请填写籍贯" }],
         doctor: [{ required: true, message: "请输入主治医生" }],
-        diagnosis: [{ required: true, message: "请填写诊断描述" }],
-        address: [{ required: true, message: "请填写居住地址" }],
         cost: [{ required: true, message: "请填写费用" }],
       },
     };
@@ -224,6 +186,7 @@ export default {
           this.form.time = dateFormat(this.form.time);
           let http = "";
           if (this.modal) {
+            this.form.checkNum = new Date().getTime()
             http = "/patient/addPatientData";
           } else {
             this.form.id = this.$route.query.id;

@@ -1,6 +1,6 @@
 <template>
     <section class="content">
-        <h3 class="page-title">病患管理</h3>
+        <h3 class="page-title">挂号</h3>
         <Form :model="form" :label-width="90" inline>
             <FormItem label="病患姓名">
                 <Input v-model="form.name" />
@@ -8,9 +8,18 @@
             <FormItem label="手机号码">
                 <Input v-model="form.tel" />
             </FormItem>
+            <FormItem label="挂号码">
+                <Input v-model="form.checkNum" />
+            </FormItem>
             <FormItem label="所在科室">
                 <Select clearable v-model="form.department" style="width:150px">
                     <Option v-for="item in department" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                </Select>
+            </FormItem>
+            <FormItem label="状态">
+                <Select clearable v-model="form.checkStatus" style="width:150px">
+                    <Option value="1" key="checkStatus1">已挂号</Option>
+                    <Option value="2" key="checkStatus2">已退号</Option>
                 </Select>
             </FormItem>
             <FormItem>
@@ -19,9 +28,9 @@
                 </Button>
             </FormItem>
         </Form>
-        <!-- <Button @click="add" icon="md-add" type="primary" size="small">
+        <Button @click="add" icon="md-add" type="primary" size="small">
             新增
-        </Button> -->
+        </Button>
         <HosTable
             @changeNo="search"
             :page="page"
@@ -41,7 +50,8 @@ export default {
                 name: '',
                 tel: '',
                 professional: '',
-                department: ''
+                department: '',
+                checkStatus: ''
             },
             page: {
                 pageNumber: 1,
@@ -49,6 +59,10 @@ export default {
                 totalCount: 100,
             },
             columns: [
+                {
+                    title: "挂号码",
+                    key: "checkNum"
+                },
                 {
                     title: "病患姓名",
                     key: "name"
@@ -63,10 +77,6 @@ export default {
                     render: (h, params) => {
                         return h("span", {}, SEX[params.row.sex]);
                     },
-                },
-                {
-                    title: "籍贯",
-                    key: "native"
                 },
                 {
                     title: "手机号码",
@@ -91,25 +101,21 @@ export default {
                     },
                 },
                 {
-                    title: "出院时间",
-                    key: "endTime",
-                    render: (h, params) => {
-                        return h(
-                            "span",
-                            {},
-                            dateFormat(params.row.endTime, "yyyy-MM-dd")
-                        );
-                    },
-                },
-                {
                     title: "主治医师",
                     key: "doctor"
+                },
+                {
+                    title: "状态",
+                    key: "checkStatus",
+                    render: (h, params) => {
+                        return h("span", {}, params.row.checkStatus == '1' ? '已挂号' : '已退号');
+                    },
                 },
                 {
                     title: "操作",
                     key: "action",
                     fixed: "right",
-                    width: 80,
+                    width: 140,
                     render: (h, params) => {
                         return h("div", [
                             h(
@@ -124,27 +130,27 @@ export default {
                                     },
                                     on: {
                                         click: () => {
-                                            this.$router.push({ path: '/patient/patient/edit', query: { id: params.row.id } })
+                                            this.$router.push({ path: '/patient/check/edit', query: { id: params.row.id } })
                                         },
                                     },
                                 },
                                 "编辑"
                             ),
-                            // h(
-                            //     "Button",
-                            //     {
-                            //         props: {
-                            //             type: "error",
-                            //             size: "small",
-                            //         },
-                            //         on: {
-                            //             click: () => {
-                            //                 this.delete(params.row);
-                            //             },
-                            //         },
-                            //     },
-                            //     "删除"
-                            // ),
+                            h(
+                                "Button",
+                                {
+                                    props: {
+                                        type: "error",
+                                        size: "small",
+                                    },
+                                    on: {
+                                        click: () => {
+                                            this.delete(params.row);
+                                        },
+                                    },
+                                },
+                                "删除"
+                            ),
                         ]);
                     },
                 },
@@ -165,7 +171,7 @@ export default {
     },
     methods: {
         add() {
-            this.$router.push('/patient/patient/add')
+            this.$router.push('/patient/check/add')
         },
         search(flag) {
             if (flag) {

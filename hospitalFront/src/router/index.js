@@ -13,6 +13,9 @@ import AuthAction from '@/view/personnel/auth/action.vue'
 import Patient from '@/view/patient/patient/list.vue'
 import PatientAction from '@/view/patient/patient/action.vue'
 
+import Check from '@/view/patient/check/list.vue'
+import CheckAction from '@/view/patient/check/action.vue'
+
 Vue.use(Router)
 
 export default new Router({
@@ -70,6 +73,23 @@ export default new Router({
         },
 
         // 病患管理
+          // 挂号
+        {
+          path: '/patient/check/list',
+          name: 'patient_check',
+          component: Check,
+          meta: {
+            keepAlive: true // 需要缓存
+          }
+        },
+        {
+          path: '/patient/check/:action',
+          name: 'patient_check_action',
+          component: CheckAction,
+          meta: {
+            keepAlive: false // 需要缓存
+          }
+        },
             // 病患管理
         {
           path: '/patient/patient/list',
@@ -86,7 +106,7 @@ export default new Router({
           meta: {
             keepAlive: false // 不需要缓存
           }
-        },
+        }
       ]
     }
   ]

@@ -8,7 +8,6 @@ class Patient {
 
     // 病患管理-获取病患信息
     getPatientData(req, res) {
-        console.log('req :>> ', req.body);
         let body = req.body // 获取参数
         let start = (body.pageNumber - 1) * body.pageSize || 0
         let end = body.pageSize || 10
@@ -16,7 +15,9 @@ class Patient {
             id: body.id || '',
             name: body.name || '',
             tel: body.tel || '',
-            department: body.department || ''
+            checkNum: body.checkNum || '',
+            department: body.department || '',
+            checkStatus: body.checkStatus || ''
         }
         let sql = until.params(params, 'name')
         let p = new Promise((resolve, reject) => {
@@ -24,6 +25,17 @@ class Patient {
                 if (err) {
                     console.log(err)
                 } else {
+                    if (!params.id) {
+                        result.map(item => {
+                            this.connection.query(`select name from user where jobNum=${item.doctor};`, (err, res) => {
+                                if (err) {
+                                    console.log(err)
+                                } else {
+                                    item.doctor = res[0].name
+                                }
+                            })
+                        })
+                    }
                     resolve(result)
                 }
             })
@@ -68,7 +80,9 @@ class Patient {
             remarks: body.remarks || '',
             drugs: body.drugs || '',
             idCard: body.idCard || '',
-            category: body.category || ''
+            category: body.category || '',
+            checkNum: body.checkNum || '',
+            checkStatus: body.checkStatus || ''
         }
         
         let sql = until.add(params)
@@ -108,7 +122,8 @@ class Patient {
             remarks: body.remarks || '',
             drugs: body.drugs || '',
             idCard: body.idCard || '',
-            category: body.category || ''
+            category: body.category || '',
+            checkStatus: body.checkStatus || ''
         }
         
         let sql = until.update(params)
