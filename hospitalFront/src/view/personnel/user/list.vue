@@ -118,6 +118,7 @@ export default {
                     title: "操作",
                     key: "action",
                     fixed: "right",
+                    width: 130,
                     render: (h, params) => {
                         return h("div", [
                             h(

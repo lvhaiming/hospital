@@ -21,3 +21,8 @@ export const dateFormat = (date, fmt = 'yyyy-MM-dd') => {
     })
     return fmt
 }
+
+export const getMonthDays = (year, month) => {
+    var day = new Date(year, month, 0)
+    return day.getDate()
+}

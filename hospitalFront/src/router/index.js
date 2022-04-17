@@ -16,6 +16,9 @@ import PatientAction from '@/view/patient/patient/action.vue'
 import Check from '@/view/patient/check/list.vue'
 import CheckAction from '@/view/patient/check/action.vue'
 
+import Emergency from '@/view/scheduling/emergency/list.vue'
+import EmergencyAction from '@/view/scheduling/emergency/action.vue'
+
 Vue.use(Router)
 
 export default new Router({
@@ -51,7 +54,7 @@ export default new Router({
             name: 'personnel_user_action',
             component: UserAction,
             meta: {
-              keepAlive: false // 不需要缓存
+              keepAlive: true // 不需要缓存
             }
         },
             // 权限管理
@@ -68,11 +71,11 @@ export default new Router({
             name: 'personnel_auth_action',
             component: AuthAction,
             meta: {
-              keepAlive: false // 不需要缓存
+              keepAlive: true // 不需要缓存
             }
         },
 
-        // 病患管理
+        // 入院管理
           // 挂号
         {
           path: '/patient/check/list',
@@ -87,7 +90,7 @@ export default new Router({
           name: 'patient_check_action',
           component: CheckAction,
           meta: {
-            keepAlive: false // 需要缓存
+            keepAlive: true // 需要缓存
           }
         },
             // 病患管理
@@ -104,9 +107,28 @@ export default new Router({
           name: 'patient_patient_action',
           component: PatientAction,
           meta: {
-            keepAlive: false // 不需要缓存
+            keepAlive: true // 不需要缓存
           }
-        }
+        },
+
+        // 排班管理
+          // 急诊科
+        {
+          path: '/scheduling/emergency/list',
+          name: 'scheduling_emergency',
+          component: Emergency,
+          meta: {
+            keepAlive: true // 需要缓存
+          }
+        },
+        {
+          path: '/scheduling/emergency/edit',
+          name: 'scheduling_emergency_action',
+          component: EmergencyAction,
+          meta: {
+            keepAlive: true // 需要缓存
+          }
+        },
       ]
     }
   ]

@@ -19,7 +19,8 @@ export default {
         }
     },
     created() {
-        this.getMenus()},
+        this.getMenus()
+    },
     methods: {
         change(name) {
             this.$router.push(`/${name}`)
