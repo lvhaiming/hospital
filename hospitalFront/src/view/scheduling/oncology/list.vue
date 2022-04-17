@@ -10,8 +10,8 @@ export default {
     },
     data() {
         return {
-            title: '急诊科',
-            department: '1'
+            title: '肿瘤科',
+            department: '6'
         }
     }
 }

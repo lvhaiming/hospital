@@ -26,6 +26,12 @@ export const DEPARTMENT = {
     '6': '肿瘤科'
 }
 
+export const POSTS = {
+    '1': '科长',
+    '2': '副科长',
+    '3': '普通'
+}
+
 export const CATEGORY = {
     '1': '自费',
     '2': '医保',

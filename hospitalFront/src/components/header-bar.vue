@@ -2,7 +2,7 @@
   <Dropdown @on-click="loginout">
         <a href="javascript:void(0)" style="color: #515a6e;">
             <Icon style="margin-top:-2px;" type="ios-contact" size="22"/>
-            <span class="text">{{ user.name }}&nbsp;/&nbsp;{{ PROFESSIONAL[user.professional] }}</span>
+            <span class="text">{{ user.name }}&nbsp;/&nbsp;{{ PROFESSIONAL[user.professional] }}&nbsp;--&nbsp;{{ DEPARTMENT[user.department] }}({{ POSTS[user.posts] }})</span>
             <Icon type="ios-arrow-down"></Icon>
         </a>
         <DropdownMenu slot="list">
@@ -15,12 +15,14 @@
 
 <script>
 import { sessionStorage } from '@/lib/until'
-import { PROFESSIONAL } from '@/lib/enums'
+import { PROFESSIONAL, DEPARTMENT, POSTS } from '@/lib/enums'
 export default {
     data() {
         return {
             user: {},
-            PROFESSIONAL
+            PROFESSIONAL,
+            DEPARTMENT,
+            POSTS
         }
     },
     created(){

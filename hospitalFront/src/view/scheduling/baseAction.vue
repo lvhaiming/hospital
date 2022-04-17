@@ -1,6 +1,6 @@
 <template>
     <section class="content">
-        <h3 class="page-title">编辑{{ form.years }}年{{ form.months }}月急诊科排班</h3>
+        <h3 class="page-title">编辑{{ form.years }}年{{ form.months }}月{{ title }}排班</h3>
         <Form :model="form" :label-width="150" ref="message" style="margin-top: 20px;" online>
             <FormItem v-for="(item, index) in days" :key="item + 's' + index" :label="item + '号(周' + weekDays[index] + ')'">
                 <span>主班：</span>
@@ -29,7 +29,8 @@
 </template>
 
 <script>
-import { getMonthDays } from "../../../lib/date";
+import { getMonthDays } from "../../lib/date";
+import { DEPARTMENT } from "../../lib/enums";
 export default {
     data() {
         return {
@@ -47,16 +48,24 @@ export default {
             schedulingNight: [],
             days: 0,
             weekDays: [],
-            doctor: []
+            doctor: [],
+            department: '',
+            DEPARTMENT
         };
     },
     created() {
         this.init()
     },
+    computed: {
+        title() {
+            return DEPARTMENT[this.department]
+        }
+    },
     methods: {
         init() {
             this.form.years = this.$route.query.years
             this.form.months = this.$route.query.months
+            this.department = this.$route.query.department
             this.form.id = Number(this.$route.query.id)
             this.days = getMonthDays(this.form.years, this.form.months)
             for(let i = 2010; i <= new Date().getFullYear(); i++) {
@@ -70,14 +79,14 @@ export default {
             this.getUser()
         },
         getDetail() {
-            this.$http.post("/scheduling/getJobNum", Object.assign(this.form, { department: '1' })).then((res) => {
+            this.$http.post("/scheduling/getJobNum", Object.assign(this.form, { department: this.department })).then((res) => {
                 let data = res.data.data;
                 this.scheduling = data.scheduling || []
                 this.schedulingNight = data.schedulingNight || []
             });
         },
         getUser() {
-            this.$http.post("/user/getUserData", { department: '1' }).then((res) => {
+            this.$http.post("/user/getUserData", { department: this.department }).then((res) => {
                 this.$nextTick(() => {
                     this.doctor = res.data.data
                 })

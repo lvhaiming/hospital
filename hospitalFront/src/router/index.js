@@ -17,7 +17,15 @@ import Check from '@/view/patient/check/list.vue'
 import CheckAction from '@/view/patient/check/action.vue'
 
 import Emergency from '@/view/scheduling/emergency/list.vue'
-import EmergencyAction from '@/view/scheduling/emergency/action.vue'
+import Internal from '@/view/scheduling/internal/list.vue'
+import Surgery from '@/view/scheduling/surgery/list.vue'
+import Pediatrics from '@/view/scheduling/pediatrics/list.vue'
+import Obstetrics from '@/view/scheduling/obstetrics/list.vue'
+import Oncology from '@/view/scheduling/oncology/list.vue'
+
+import SchedulingAction from '@/view/scheduling/baseAction'
+
+
 
 Vue.use(Router)
 
@@ -121,14 +129,60 @@ export default new Router({
             keepAlive: true // 需要缓存
           }
         },
+          // 内科
         {
-          path: '/scheduling/emergency/edit',
-          name: 'scheduling_emergency_action',
-          component: EmergencyAction,
+          path: '/scheduling/internal/list',
+          name: 'scheduling_internal',
+          component: Internal,
           meta: {
             keepAlive: true // 需要缓存
           }
         },
+        // 外科
+        {
+          path: '/scheduling/surgery/list',
+          name: 'scheduling_surgery',
+          component: Surgery,
+          meta: {
+            keepAlive: true // 需要缓存
+          }
+        },
+          // 儿科
+        {
+          path: '/scheduling/pediatrics/list',
+          name: 'scheduling_pediatrics',
+          component: Pediatrics,
+          meta: {
+            keepAlive: true // 需要缓存
+          }
+        },
+        // 妇产科
+        {
+          path: '/scheduling/obstetrics/list',
+          name: 'scheduling_obstetrics',
+          component: Obstetrics,
+          meta: {
+            keepAlive: true // 需要缓存
+          }
+        },
+          // 肿瘤科
+        {
+          path: '/scheduling/oncology/list',
+          name: 'scheduling_oncology',
+          component: Oncology,
+          meta: {
+            keepAlive: true // 需要缓存
+          }
+        },
+        {
+          path: '/scheduling/edit',
+          name: 'scheduling_action',
+          component: SchedulingAction,
+          meta: {
+            keepAlive: true // 需要缓存
+          }
+        },
+        
       ]
     }
   ]

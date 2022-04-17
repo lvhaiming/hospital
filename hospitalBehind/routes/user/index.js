@@ -11,9 +11,9 @@ class User {
         let body = req.body
         let sql = ''
         if (body.username.length == 8) {
-            sql = `select name,professional,tel,password from user where jobNum=${body.username}`
+            sql = `select name,professional,tel,password,department,posts from user where jobNum=${body.username}`
         } else {
-            sql = `select name,professional,tel,password from user where tel=${body.username}`
+            sql = `select name,professional,tel,password,department,posts from user where tel=${body.username}`
         }
         this.connection.query(sql, (err, result) => {
             if (err) {
@@ -25,6 +25,8 @@ class User {
                         res.send({
                             name: message.name,
                             professional: message.professional,
+                            department: message.department,
+                            posts: message.posts,
                             code: '0000',
                             msg: '登录成功'
                         })
@@ -96,6 +98,7 @@ class User {
             sex: body.sex || '',
             professional: body.professional || '',
             department: body.department || '',
+            posts: body.posts || '',
             time: body.time || '',
             native: body.native || '',
             tel: body.tel || '',
@@ -134,6 +137,7 @@ class User {
             sex: body.sex || '',
             professional: body.professional || '',
             department: body.department || '',
+            posts: body.posts || '',
             time: body.time || '',
             native: body.native || '',
             tel: body.tel || '',

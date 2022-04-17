@@ -50,6 +50,13 @@
                     </FormItem>
                 </Col>
                 <Col span="8">
+                    <FormItem label="所在科室职位" prop="posts">
+                        <Select clearable v-model="form.posts" style="width:150px">
+                            <Option v-for="item in posts" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                        </Select>
+                    </FormItem>
+                </Col>
+                <Col span="8">
                     <FormItem label="入职时间" prop="time">
                         <DatePicker v-model="form.time" type="date" :options="options" placeholder="Select date" style="width: 200px"></DatePicker>
                     </FormItem>
@@ -75,7 +82,7 @@
 </template>
 
 <script>
-import { SEX, PROFESSIONAL, DEPARTMENT } from "../../../lib/enums";
+import { SEX, PROFESSIONAL, DEPARTMENT, POSTS } from "../../../lib/enums";
 import { dateFormat } from "../../../lib/date";
 export default {
     data() {
@@ -83,9 +90,11 @@ export default {
             PROFESSIONAL,
             DEPARTMENT,
             SEX,
+            POSTS,
             department: [],
             professional: [],
             sex: [],
+            posts: [],
             submitStatus: false,
             form: {
                 name: '',
@@ -96,6 +105,7 @@ export default {
                 jobNum: '',
                 professional: '',
                 department: '',
+                posts: '',
                 time: '',
                 native: '',
             },
@@ -158,6 +168,7 @@ export default {
                 ],
                 professional: [{ required: true, message: '请选择职称' }],
                 department: [{ required: true, message: '请选择所在科室' }],
+                posts: [{ required: true, message: '请选择所在科室职位' }],
                 time: [{ required: true, message: '请选择入职时间' }],
                 native: [{ required: true, message: '请填写籍贯' }]
             },
@@ -225,6 +236,12 @@ export default {
                 this.sex.push({
                     value: key,
                     label: this.SEX[key]
+                })
+            }
+            for (let key in this.POSTS) {
+                this.posts.push({
+                    value: key,
+                    label: this.POSTS[key]
                 })
             }
         }
