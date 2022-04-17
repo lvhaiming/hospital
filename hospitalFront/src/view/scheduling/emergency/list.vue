@@ -16,11 +16,11 @@
                 <Button @click="getData" icon="md-search" type="primary">
                     查询
                 </Button>
+                <Button @click="edit" icon="md-clipboard" type="primary" style="margin-left: 16px;">
+                    编辑
+                </Button>
             </FormItem>
         </Form>
-        <Button @click="edit" type="primary" size="small">
-            编辑
-        </Button>
         <SchedulingTable :title="title" :year="form.years" :month="form.months" :data="data" :dataNight="dataNight"></SchedulingTable>
     </section>
 </template>

@@ -10,11 +10,11 @@
                 <div class="bold">星期</div>
                 <div v-for="(item, index) in weekDays" :key="index + 'b'" class="bold"><span>{{ item }}</span></div>
             </div>
-            <div class="table-content">
+            <div class="table-content lineHeight">
                 <div class="bold">主班</div>
                 <div v-for="(item, index) in data" :key="index + 'b'" style="padding: 5px;"><span>{{ item }}</span></div>
             </div>
-            <div class="table-content">
+            <div class="table-content lineHeight">
                 <div class="bold">夜班</div>
                 <div v-for="(item, index) in dataNight" :key="index + 'b'" style="padding: 5px;"><span>{{ item }}</span></div>
             </div>
@@ -116,6 +116,9 @@ h2 {
         .bold {
             font-weight: bold;
         }
+    }
+    .lineHeight {
+        min-height: 60px;
     }
 }
 </style>
