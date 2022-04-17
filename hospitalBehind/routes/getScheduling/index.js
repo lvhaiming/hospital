@@ -37,16 +37,33 @@ class User {
             } else {
                 if (result.length == 0) {
                     res.send({
-                        data: {},
+                        data: {
+                            scheduling: [],
+                            schedulingNight: [],
+                        },
                         code: '0000',
                         msg: 'ok'
                     })
                     return
                 }
+                // console.log('result[0].scheduling :>> ', result[0].scheduling);
+                // console.log('result[0].schedulingNight :>> ', result[0].schedulingNight);
+                // if (!result[0].scheduling && !result[0].schedulingNight) {
+                //     console.log('走这里')
+                //     res.send({
+                //         data: {
+                //             scheduling: [],
+                //             schedulingNight: [],
+                //         },
+                //         code: '0000',
+                //         msg: 'ok'
+                //     })
+                //     return
+                // }
                 let data = []
                 let dataName = []
                 let dataLength = []
-                let a = result[0].scheduling.split(',')
+                let a = (result[0].scheduling && result[0].scheduling.length) > 0 ? result[0].scheduling.split(',') : ['0']
                 a = a.map(item => {
                     return item.split('-')
                 })
@@ -63,7 +80,7 @@ class User {
                 let dataNight = []
                 let dataNameNight = []
                 let dataLengthNight = []
-                let aNight = result[0].schedulingNight.split(',')
+                let aNight = (result[0].schedulingNight && result[0].schedulingNight.length) > 0 ? result[0].schedulingNight.split(',') : ['0']
                 aNight = aNight.map(item => {
                     return item.split('-')
                 })
@@ -132,12 +149,13 @@ class User {
                     })
                     return
                 }
-                let a = result[0].scheduling.split(',')
+                let a = (result[0].scheduling && result[0].scheduling.length) > 0 ? result[0].scheduling.split(',') : ['0']
+                
                 a = a.map(item => {
                     return item.split('-')
                 })
 
-                let aNight = result[0].schedulingNight.split(',')
+                let aNight = (result[0].schedulingNight && result[0].schedulingNight.length) > 0 ? result[0].schedulingNight.split(',') : ['0']
                 aNight = aNight.map(item => {
                     return item.split('-')
                 })
