@@ -23,6 +23,11 @@ var addScheduling = require('./getScheduling/add');
 var editScheduling = require('./getScheduling/edit');
 var getJobNum = require('./getScheduling/queryJobNum');
 
+var getPharmacyData = require('./getPharmacy/query');
+var addPharmacyData = require('./getPharmacy/add');
+var editPharmacyData = require('./getPharmacy/edit');
+var deletePharmacyData = require('./getPharmacy/delete');
+
 
 app.use('/login', login);
 
@@ -46,5 +51,10 @@ app.use('/scheduling/getScheduling', getScheduling);
 app.use('/scheduling/addScheduling', addScheduling);
 app.use('/scheduling/editScheduling', editScheduling);
 app.use('/scheduling/getJobNum', getJobNum);
+
+app.use('/pharmacy/getPharmacyData', getPharmacyData);
+app.use('/pharmacy/addPharmacyData', addPharmacyData);
+app.use('/pharmacy/editPharmacyData', editPharmacyData);
+app.use('/pharmacy/deletePharmacyData', deletePharmacyData);
 
 module.exports = app;

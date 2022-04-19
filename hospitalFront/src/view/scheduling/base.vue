@@ -88,11 +88,12 @@ export default {
         getData() {
             this.$http.post("/scheduling/getScheduling", Object.assign(this.form, { department: this.department })).then((res) => {
                 let data = res.data.data;
-                if (!data.scheduling) {
+                if (data.scheduling.length == 0) {
                     this.mode = 'add'
                 } else {
                     this.mode = 'edit'
                 }
+                console.log('this.mode :>> ', this.mode);
                 this.year = data.years || this.form.years
                 this.month = data.months || this.form.months
                 this.id = data.id || null

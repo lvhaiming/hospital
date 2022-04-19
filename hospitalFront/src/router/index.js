@@ -25,6 +25,9 @@ import Oncology from '@/view/scheduling/oncology/list.vue'
 
 import SchedulingAction from '@/view/scheduling/baseAction'
 
+import Pharmacy from '@/view/pharmacy/pharmacy/list.vue'
+import PharmacyAction from '@/view/pharmacy/pharmacy/action.vue'
+
 
 
 Vue.use(Router)
@@ -138,7 +141,7 @@ export default new Router({
             keepAlive: true // 需要缓存
           }
         },
-        // 外科
+          // 外科
         {
           path: '/scheduling/surgery/list',
           name: 'scheduling_surgery',
@@ -156,7 +159,7 @@ export default new Router({
             keepAlive: true // 需要缓存
           }
         },
-        // 妇产科
+          // 妇产科
         {
           path: '/scheduling/obstetrics/list',
           name: 'scheduling_obstetrics',
@@ -178,6 +181,24 @@ export default new Router({
           path: '/scheduling/edit',
           name: 'scheduling_action',
           component: SchedulingAction,
+          meta: {
+            keepAlive: true // 需要缓存
+          }
+        },
+        // 排班管理
+          // 排班管理
+        {
+          path: '/pharmacy/pharmacy/list',
+          name: 'pharmacy_pharmacy',
+          component: Pharmacy,
+          meta: {
+            keepAlive: true // 需要缓存
+          }
+        },
+        {
+          path: '/pharmacy/pharmacy/:action',
+          name: 'pharmacy_pharmacy_action',
+          component: PharmacyAction,
           meta: {
             keepAlive: true // 需要缓存
           }

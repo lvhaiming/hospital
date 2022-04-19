@@ -184,6 +184,7 @@ class User {
         }
         
         let sql = until.add(params)
+        console.log('sql :>> ', sql);
         this.connection.query(`insert into scheduling${sql};`, (err, result) => {
             if (err) {
                 console.log(err)
