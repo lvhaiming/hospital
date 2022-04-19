@@ -55,23 +55,22 @@ export default {
             year: null,
             month: null,
             mode: 'edit',
-            id: null,
-            user: {}
+            users: {}
         };
     },
     created () {
         this.init()
-        this.user = sessionStorage.get('hospital_user')
+        this.users = sessionStorage.get('hospital_user')
     },
     computed: {
        isShow() {
-           return this.user.posts == '1' && this.user.department == this.department
+           return this.users.posts == '1' && this.users.department == this.department
        } 
     },
     methods: {
         edit() {
             // this.$emit('edit')
-            this.$router.push({ path: '/scheduling/edit', query: { years: this.year, months: this.month, mode: this.mode, id: this.id, department: this.department } })
+            this.$router.push({ path: '/scheduling/edit', query: { department: this.department } })
         },
         init() {
             this.form.years = new Date().getFullYear()
@@ -88,15 +87,8 @@ export default {
         getData() {
             this.$http.post("/scheduling/getScheduling", Object.assign(this.form, { department: this.department })).then((res) => {
                 let data = res.data.data;
-                if (data.scheduling.length == 0) {
-                    this.mode = 'add'
-                } else {
-                    this.mode = 'edit'
-                }
-                console.log('this.mode :>> ', this.mode);
                 this.year = data.years || this.form.years
                 this.month = data.months || this.form.months
-                this.id = data.id || null
                 this.data = data.scheduling || []
                 this.dataNight = data.schedulingNight || []
                 this.data.length = getMonthDays(this.year, this.month)

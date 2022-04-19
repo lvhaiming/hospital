@@ -1,7 +1,23 @@
 <template>
     <section class="content">
-        <h3 class="page-title">编辑{{ form.years }}年{{ form.months }}月{{ title }}排班</h3>
-        <Form :model="form" :label-width="150" ref="message" style="margin-top: 20px;" online>
+        <h3 class="page-title">编辑{{ title }}排班</h3>
+        <Form :model="form" :label-width="150" ref="message" style="margin-top: 20px;" :rules="formRules" online>
+            <Row>
+                <Col span="8">
+                    <FormItem label="选择年份" prop="years">
+                        <Select clearable v-model="form.years" style="width:150px" @on-change="getData">
+                            <Option v-for="item in yearArr" :value="item" :key="item">{{ item }}</Option>
+                        </Select>
+                    </FormItem>
+                </Col>
+                <Col span="8">
+                    <FormItem label="选择月份"  prop="months">
+                        <Select clearable v-model="form.months" style="width:150px" @on-change="getData">
+                            <Option v-for="item in monthArr" :value="item" :key="item">{{ item }}</Option>
+                        </Select>
+                    </FormItem>
+                </Col>
+            </Row>
             <FormItem v-for="(item, index) in days" :key="item + 's' + index" :label="item + '号(周' + weekDays[index] + ')'">
                 <span>主班：</span>
                 <Select clearable multiple v-model="scheduling[index]" style="width:40%">
@@ -50,7 +66,13 @@ export default {
             weekDays: [],
             doctor: [],
             department: '',
-            DEPARTMENT
+            DEPARTMENT,
+            formRules: {
+                years: [{ required: true, message: '用户名称不能为空' }],
+                months: [{ required: true, message: '请输入登录密码' }],
+            },
+            mode: '',
+            id: null
         };
     },
     created() {
@@ -62,25 +84,33 @@ export default {
         }
     },
     methods: {
-        init() {
-            this.form.years = this.$route.query.years
-            this.form.months = this.$route.query.months
-            this.department = this.$route.query.department
-            this.form.id = Number(this.$route.query.id)
+        getData() {
             this.days = getMonthDays(this.form.years, this.form.months)
+            this.getDetail()
+            this.getEveryDay()
+        },
+        init() {
+            this.form.years = new Date().getFullYear()
+            this.form.months = new Date().getMonth() + 1
+            this.department = this.$route.query.department
             for(let i = 2010; i <= new Date().getFullYear(); i++) {
                 this.yearArr.push(i)
             }
             for(let i = 1; i <= 12; i++) {
                 this.monthArr.push(i)
             }
-            this.getDetail()
-            this.getEveryDay()
+            this.getData()
             this.getUser()
         },
         getDetail() {
             this.$http.post("/scheduling/getJobNum", Object.assign(this.form, { department: this.department })).then((res) => {
                 let data = res.data.data;
+                this.form.id = data.id || ''
+                if (!this.form.id) {
+                    this.mode = 'add'
+                } else {
+                    this.mode = 'edit'
+                }
                 this.scheduling = data.scheduling || []
                 this.schedulingNight = data.schedulingNight || []
             });
@@ -93,40 +123,44 @@ export default {
             });
         },
         submit() {
-            let a = ['0']
-            let data = JSON.parse(JSON.stringify(this.scheduling))
-            let dataNight = JSON.parse(JSON.stringify(this.schedulingNight))
-            for(let i = data.length; i < this.days; i++) {
-                data.push(a)
-            }
-            for(let i = dataNight.length; i < this.days; i++) {
-                dataNight.push(a)
-            }
-            data = data.map(item => {
-                if (!item || item.length == 0) {
-                    item = a
+            this.$refs.message.validate((valid) => {
+                if (valid){
+                    let a = ['0']
+                    let data = JSON.parse(JSON.stringify(this.scheduling))
+                    let dataNight = JSON.parse(JSON.stringify(this.schedulingNight))
+                    for(let i = data.length; i < this.days; i++) {
+                        data.push(a)
+                    }
+                    for(let i = dataNight.length; i < this.days; i++) {
+                        dataNight.push(a)
+                    }
+                    data = data.map(item => {
+                        if (!item || item.length == 0) {
+                            item = a
+                        }
+                        item = item.join('-')
+                        return item
+                    })
+                    dataNight = dataNight.map(item => {
+                        if (!item || item.length == 0) {
+                            item = a
+                        }
+                        item = item.join('-')
+                        return item
+                    })
+                    this.form.scheduling = data.join(',')
+                    this.form.schedulingNight = dataNight.join(',')
+                    let http = this.mode == 'add' ? '/scheduling/addScheduling' : '/scheduling/editScheduling'
+                    this.$http.post(http, this.form).then((res) => {
+                        if (res.data.code === '0000') {
+                            this.$Message.success(res.data.msg);
+                            this.cancel()
+                        } else {
+                            this.$Message.error(res.data.msg);
+                        }
+                    });
                 }
-                item = item.join('-')
-                return item
             })
-            dataNight = dataNight.map(item => {
-                if (!item || item.length == 0) {
-                    item = a
-                }
-                item = item.join('-')
-                return item
-            })
-            this.form.scheduling = data.join(',')
-            this.form.schedulingNight = dataNight.join(',')
-            let http = this.$route.query.mode == 'add' ? '/scheduling/addScheduling' : '/scheduling/editScheduling'
-            this.$http.post(http, this.form).then((res) => {
-                if (res.data.code === '0000') {
-                    this.$Message.success(res.data.msg);
-                    this.cancel()
-                } else {
-                    this.$Message.error(res.data.msg);
-                }
-            });
         },
         cancel() {
             this.$router.go(-1)
