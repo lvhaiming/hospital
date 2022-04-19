@@ -1,9 +1,9 @@
 <template>
   <div id="app">
     <keep-alive>
-        <router-view v-if="$route.meta.keepAlive"></router-view>
+        <router-view v-if="$route.meta.keepAlive" key="keep"></router-view>
     </keep-alive>
-    <router-view v-if="!$route.meta.keepAlive"></router-view>
+    <router-view v-if="!$route.meta.keepAlive" key="nokeep"></router-view>
   </div>
 </template>
 
@@ -47,4 +47,5 @@ html,body {
   height: 100%;
   background: #f5f7f9;
 }
+
 </style>

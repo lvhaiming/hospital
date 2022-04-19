@@ -8,9 +8,11 @@
             <Header class="layout-header-bar">
                 <headerbar></headerbar>
             </Header>
-            <Content>
-                <router-view/>
-            </Content>
+                <Content>
+                    <transition name="test" appear>
+                        <router-view/>
+                    </transition>
+                </Content>
         </Layout>
     </Layout>
 </div>
@@ -60,5 +62,12 @@ export default {
 .ivu-layout-header {
     display: flex;
     flex-direction: row-reverse;
+}
+.test-enter-active, .test-leave-actiove {
+  transition: all 0.4s;
+}
+.test-enter, .test-leave-to {
+  transform: translate(-30px);
+  opacity: 0;
 }
 </style>
