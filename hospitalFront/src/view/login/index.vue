@@ -11,6 +11,10 @@
             <FormItem>
                 <Button type="primary" @click="login('formValidate')" style="width: 240px;">登录</Button>
             </FormItem>
+            <div style="text-align: center;">
+                <a @click="register">患者注册</a>
+                <a @click="forget" style="margin-left: 40px;">忘记密码？</a>
+            </div>
         </Form>
     </section>
 </template>
@@ -54,6 +58,12 @@ export default {
                     // this.$router.push('/home')
                 }
             })
+        },
+        register() {
+            this.$router.push('/register')
+        },
+        forget() {
+            this.$router.push('/forgetPassword')
         }
     }
 }

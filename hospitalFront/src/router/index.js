@@ -3,6 +3,8 @@ import Router from 'vue-router'
 import Home from '@/view/main/home.vue'
 import Welcome from '@/view/login/welcome.vue'
 import Login from '@/view/login/index.vue'
+import Register from '@/view/login/register.vue'
+import ForgetPassword from '@/view/login/forgetPassword.vue'
 
 import User from '@/view/personnel/user/list.vue'
 import UserAction from '@/view/personnel/user/action.vue'
@@ -35,9 +37,19 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
-        path: '/',
-        name: 'login',
-        component: Login
+      path: '/',
+      name: 'login',
+      component: Login
+    },
+    {
+      path: '/register',
+      name: 'register',
+      component: Register
+    },
+    {
+      path: '/forgetPassword',
+      name: 'forgetPassword',
+      component: ForgetPassword
     },
     {
       path: '/home',

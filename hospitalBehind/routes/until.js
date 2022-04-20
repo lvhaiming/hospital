@@ -20,7 +20,9 @@ var until = {
     update (params) {
         let count = []
         for (let key in params) {
-            count.push(key + '=' + '"' + params[key] + '"')
+            if (params[key]) {
+                count.push(key + '=' + '"' + params[key] + '"')
+            }
         }
         if (count.length == 0) {
             return ''

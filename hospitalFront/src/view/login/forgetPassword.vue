@@ -1,20 +1,9 @@
 <template>
     <section class="form">
         <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="100">
-            <h1>患者注册</h1>
-            <FormItem label="用户名" prop="name">
-                <Input v-model="formValidate.name" placeholder="请输入用户名"></Input>
-            </FormItem>
+            <h1>找回密码</h1>
             <FormItem label="手机号" prop="tel">
                 <Input v-model="formValidate.tel" placeholder="请输入手机号" :maxlength="11"></Input>
-            </FormItem>
-            <FormItem label="年龄" prop="age">
-                <Input v-model="formValidate.age" placeholder="请输入年龄"></Input>
-            </FormItem>
-            <FormItem label="性别" prop="sex">
-                <Select clearable v-model="formValidate.sex" style="width:150px">
-                    <Option v-for="item in sex" :value="item.value" :key="item.value">{{ item.label }}</Option>
-                </Select>
             </FormItem>
             <FormItem label="证件号" prop="idCard">
                 <Input v-model="formValidate.idCard" placeholder="请输入证件号" :maxlength="18"></Input>
@@ -41,20 +30,12 @@ export default {
     data () {
         return {
             formValidate: {
-                name: '',
                 tel: '',
                 password: '',
                 password2: '',
-                age: '',
                 idCard: '',
-                sex: '',
-                jobNum: '',
-                professional: ''
             },
             ruleValidate: {
-                name: [
-                    { required: true, message: '请输入用户名', trigger: 'blur' }
-                ],
                 tel: [
                     { required: true, message: '手机号码不能为空' },
                     {
@@ -76,18 +57,7 @@ export default {
                 ],
                 password2: [
                     { required: true, message: '请再次输入密码', trigger: 'blur' },
-                ],
-                age: [
-                    { required: true, message: '年龄不能为空' },
-                    {
-                        message: '请输入正确的年龄',
-                        trigger: 'blur',
-                        validator: this.$validate.isAge
-                    }
-                ],
-                sex: [
-                    { required: true, message: '请选择性别', trigger: 'blur' },
-                ],
+                ]
             },
             SEX,
             sex: []
@@ -104,21 +74,24 @@ export default {
       register (name) {
         this.$refs[name].validate((valid) => {
             if (valid) {
-              if (this.formValidate.password !== this.formValidate.password2) {
-                return this.$Message.error('两次密码不一样');
-              }
-              this.formValidate.jobNum = new Date().getTime()
-              this.formValidate.professional = '99'
-              this.$http.post('/user/addUserData', this.formValidate).then(res => {
-                  if (res.data.code === '0001') {
-                      this.$Message.error('注册失败');
-                  } else {
-                      this.$Message.success('注册成功');
-                      this.$router.push('/login')
-                  }
-              })
-                // this.$Message.success('登录成功!');
-                // this.$router.push('/home')
+                if (this.formValidate.password !== this.formValidate.password2) {
+                    return this.$Message.error('两次密码不一样');
+                }
+                this.$http.post("/user/getUserData", Object.assign({tel: this.formValidate.tel})).then((res) => {
+                    console.log('res.data :>> ', res.data);
+                    let data = res.data.data
+                    if (data.length == 0) {
+                        return this.$Message.error('用户不存在');
+                    } else {
+                        if (data[0].idCard !== this.formValidate.idCard) {
+                            return this.$Message.error('证件号有误');
+                        }
+                        this.$http.post("/user/editUserData", Object.assign({ id: data[0].id, password: this.formValidate.password })).then((res) => {
+                            this.$Message.success('修改密码成功');
+                            this.$router.push('/login')
+                        });
+                    }
+                });
             }
         })
       },

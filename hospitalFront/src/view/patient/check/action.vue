@@ -119,39 +119,30 @@ export default {
       formRules: {
         name: [{ required: true, message: "用户名称不能为空" }],
         age: [
-          { required: true, message: "年龄不能为空" },
-          {
-            message: "请输入正确的年龄",
-            trigger: "blur",
-            validator(rule, value, callback) {
-              if (value) {
-                if (/^([1-9]\d?|1[01]\d|120)$/.test(value)) {
-                  callback();
-                } else {
-                  return callback(new Error(rule.message));
-                }
-              }
-            },
-          },
+            { required: true, message: '年龄不能为空' },
+            {
+                message: '请输入正确的年龄',
+                trigger: 'blur',
+                validator: this.$validate.isAge
+            }
         ],
         sex: [{ required: true, message: "请选择性别" }],
         tel: [
-          { required: true, message: "手机号码不能为空" },
+          { required: true, message: '手机号码不能为空' },
           {
-            message: "请输入正确的手机号码",
-            trigger: "blur",
-            validator(rule, value, callback) {
-              if (value) {
-                if (/^1\d{10}$/.test(value)) {
-                  callback();
-                } else {
-                  return callback(new Error(rule.message));
-                }
-              }
-            },
-          },
+            message: '请输入正确的手机号码',
+            trigger: 'blur',
+            validator: this.$validate.isMobile
+          }
         ],
-        idCard: [{ required: true, message: "请输入证件号" }],
+        idCard: [
+          { required: true, message: '证件号不能为空' },
+          {
+            message: '请输入正确的证件号',
+            trigger: 'blur',
+            validator: this.$validate.isCard
+          }
+        ],
         department: [{ required: true, message: "请选择所在科室" }],
         category: [{ required: true, message: "请选择费别" }],
         startTime: [{ required: true, message: "请选择入院时间" }],

@@ -31,37 +31,42 @@
                     </FormItem>
                 </Col>
                 <Col span="8">
+                    <FormItem label="证件号" prop="idCard">
+                        <Input v-model="form.idCard" :maxlength="18" />
+                    </FormItem>
+                </Col>
+                <Col span="8" v-if="show">
                     <FormItem label="工号" prop="jobNum">
                         <Input v-model="form.jobNum" :maxlength="8" />
                     </FormItem>
                 </Col>
-                <Col span="8">
+                <Col span="8" v-if="show">
                     <FormItem label="职称" prop="professional">
                         <Select clearable v-model="form.professional" style="width:150px">
                             <Option v-for="item in professional.filter(i => { return i.value !== '99'})" :value="item.value" :key="item.value">{{ item.label }}</Option>
                         </Select>
                     </FormItem>
                 </Col>
-                <Col span="8">
+                <Col span="8" v-if="show">
                     <FormItem label="所在科室" prop="department">
                         <Select clearable v-model="form.department" style="width:150px">
                             <Option v-for="item in department" :value="item.value" :key="item.value">{{ item.label }}</Option>
                         </Select>
                     </FormItem>
                 </Col>
-                <Col span="8">
+                <Col span="8" v-if="show">
                     <FormItem label="所在科室职位" prop="posts">
                         <Select clearable v-model="form.posts" style="width:150px">
                             <Option v-for="item in posts" :value="item.value" :key="item.value">{{ item.label }}</Option>
                         </Select>
                     </FormItem>
                 </Col>
-                <Col span="8">
+                <Col span="8" v-if="show">
                     <FormItem label="入职时间" prop="time">
                         <DatePicker v-model="form.time" type="date" :options="options" placeholder="Select date" style="width: 200px"></DatePicker>
                     </FormItem>
                 </Col>
-                <Col span="8">
+                <Col span="8" v-if="show">
                     <FormItem label="籍贯" prop="native">
                         <Input v-model="form.native" />
                     </FormItem>
@@ -108,6 +113,7 @@ export default {
                 posts: '',
                 time: '',
                 native: '',
+                idCard: ''
             },
             options: {
                 disabledDate (date) {
@@ -122,15 +128,7 @@ export default {
                     {
                         message: '请输入正确的年龄',
                         trigger: 'blur',
-                        validator(rule, value, callback) {
-                            if (value) {
-                                if (/^([1-9]\d?|1[01]\d|120)$/.test(value)) {
-                                    callback()
-                                } else {
-                                    return callback(new Error(rule.message))
-                                }
-                            }
-                        }
+                        validator: this.$validate.isAge
                     }
                 ],
                 sex: [{ required: true, message: '请选择性别' }],
@@ -139,15 +137,15 @@ export default {
                     {
                         message: '请输入正确的手机号码',
                         trigger: 'blur',
-                        validator(rule, value, callback) {
-                            if (value) {
-                                if (/^1\d{10}$/.test(value)) {
-                                    callback()
-                                } else {
-                                    return callback(new Error(rule.message))
-                                }
-                            }
-                        }
+                        validator: this.$validate.isMobile
+                    }
+                ],
+                idCard: [
+                    { required: true, message: '证件号不能为空' },
+                    {
+                        message: '请输入正确的证件号',
+                        trigger: 'blur',
+                        validator: this.$validate.isCard
                     }
                 ],
                 jobNum: [
@@ -183,6 +181,9 @@ export default {
     computed: {
         modal() {
             return this.$route.params.action === 'add'
+        },
+        show() {
+            return this.form.professional !== '99'
         }
     },
     methods: {

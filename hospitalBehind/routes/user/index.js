@@ -104,6 +104,7 @@ class User {
             tel: body.tel || '',
             jobNum: body.jobNum || '',
             password: body.password || '',
+            idCard: body.idCard || '',
         }
         let sql = until.add(params)
         this.connection.query(`insert into user${sql};`, (err, result) => {
@@ -113,7 +114,7 @@ class User {
                 if (err.sqlMessage.indexOf('jobNum') > -1) {
                     ms = '工号'
                 } else {
-                    ms = '手机号号'
+                    ms = '手机号'
                 }
                 res.send({
                     code: err.errno,
@@ -143,6 +144,7 @@ class User {
             tel: body.tel || '',
             jobNum: body.jobNum || '',
             password: body.password || '',
+            idCard: body.idCard || '',
         }
         let sql = until.update(params)
         this.connection.query(`update user set ${sql} where id=${body.id};`, (err, result) => {
