@@ -9,7 +9,7 @@ class Pharmacy {
     getPharmacyData(req, res) {
         let body = req.body // 获取参数
         let start = (body.pageNumber - 1) * body.pageSize || 0
-        let end = body.pageSize || -1
+        let end = body.pageSize || 10
         let params = {
             id: body.id || '',
             name: body.name || '',
@@ -17,8 +17,9 @@ class Pharmacy {
             type: body.type || ''
         }
         let sql = until.params(params, 'name')
+        let limit =  body.pageSize ? ` limit ${start},${end};` : ''
         let p = new Promise((resolve, reject) => {
-            this.connection.query(`select * from pharmacy ${sql} limit ${start},${end};`, (err, result) => {
+            this.connection.query(`select * from pharmacy ${sql}${limit}`, (err, result) => {
                 if (err) {
                     console.log(err)
                 } else {

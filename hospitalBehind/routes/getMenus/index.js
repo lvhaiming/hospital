@@ -86,14 +86,15 @@ class User {
     getPersonal (req, res) {
         let body = req.body // 获取参数
         let start = (body.pageNumber - 1) * body.pageSize || 0
-        let end = body.pageSize || -1
+        let end = body.pageSize || 10
         let professional = body.professional // 获取参数
         let params = {
             professional_id: professional || ''
         }
         let sql = until.params(params)
+        let limit =  body.pageSize ? ` limit ${start},${end};` : ''
         let p = new Promise((resolve, reject) => {
-            this.connection.query(`select * from professional ${sql} limit ${start},${end};`, (err, result) => {
+            this.connection.query(`select * from professional ${sql}${limit}`, (err, result) => {
                 if (err) {
                     console.log(err)
                 } else {
