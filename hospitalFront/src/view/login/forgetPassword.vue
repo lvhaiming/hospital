@@ -15,7 +15,7 @@
                 <Input v-model="formValidate.password2" placeholder="请再次输入密码" type="password"></Input>
             </FormItem>
             <FormItem>
-                <Button type="primary" @click="register('formValidate')" style="width: 240px;">注册</Button>
+                <Button type="primary" @click="register('formValidate')" style="width: 240px;">确定</Button>
             </FormItem>
             <div style="text-align: center;margin-left: 40px;">
                 <a @click="login">返回登录</a>
