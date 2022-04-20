@@ -113,8 +113,11 @@ export default {
                   if (res.data.code === '0001') {
                       this.$Message.error('注册失败');
                   } else {
-                      this.$Message.success('注册成功');
-                      this.$router.push('/login')
+                    if (res.data.code == 1062) {
+                      return this.$Message.error(res.data.msg);
+                    }
+                    this.$Message.success('注册成功');
+                    this.$router.push('/login')
                   }
               })
                 // this.$Message.success('登录成功!');
@@ -137,7 +140,7 @@ export default {
     .form {
         width: 400px;
         margin: auto;
-        padding-top: 25vh;
+        padding-top: 16vh;
         h1 {
             text-align: center;
             margin-bottom: 16px;
