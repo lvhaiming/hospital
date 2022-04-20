@@ -24,6 +24,11 @@
                     </FormItem>
                 </Col>
                 <Col span="8">
+                    <FormItem label="价格" prop="price">
+                        <Input v-model="form.price" />
+                    </FormItem>
+                </Col>
+                <Col span="8">
                     <FormItem label="处方药" prop="prescription">
                         <Select clearable v-model="form.prescription" style="width:150px">
                             <Option value="1" key="prescription1">处方药</Option>
@@ -70,7 +75,8 @@ export default {
                 uses: '',
                 careful: '',
                 prescription: '',
-                type: ''
+                type: '',
+                price: ''
             },
             formRules: {
                 name: [{ required: true, message: '药品名称不能为空' }],
@@ -80,6 +86,14 @@ export default {
                 careful: [{ required: true, message: '请填写药品注意事项' }],
                 prescription: [{ required: true, message: '请选择药品是否为处方药' }],
                 type: [{ required: true, message: '请选择药品类型' }],
+                price: [
+                    { required: true, message: '价格不能为空' },
+                    {
+                        message: '请输入正确的价格',
+                        trigger: 'blur',
+                        validator: this.$validate.isPrice
+                    }
+                ],
             },
         };
     },

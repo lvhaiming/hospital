@@ -28,6 +28,7 @@ export default {
         },
         getMenus() {
             this.$http.post("getMenus",{ professional: sessionStorage.get('hospital_user').professional }).then((res) => {
+                this.menu = []
                 this.menu = res.data.data;
                 var routerList = []
                 this.menu.forEach(item => {

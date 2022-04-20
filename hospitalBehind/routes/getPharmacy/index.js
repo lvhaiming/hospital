@@ -56,7 +56,8 @@ class Pharmacy {
             uses: body.uses || '',
             careful: body.careful || '',
             prescription: body.prescription || '',
-            type: body.type || ''
+            type: body.type || '',
+            price: body.price || '',
         }
         let sql = until.add(params)
         this.connection.query(`insert into pharmacy${sql};`, (err, result) => {
@@ -81,7 +82,8 @@ class Pharmacy {
             uses: body.uses || '',
             careful: body.careful || '',
             prescription: body.prescription || '',
-            type: body.type || ''
+            type: body.type || '',
+            price: body.price || '',
         }
         let sql = until.update(params)
         this.connection.query(`update pharmacy set ${sql} where id=${body.id};`, (err, result) => {

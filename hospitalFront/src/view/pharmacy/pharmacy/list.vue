@@ -23,7 +23,7 @@
                 </Button>
             </FormItem>
         </Form>
-        <Button @click="add" icon="md-add" type="primary" size="small">
+        <Button @click="add" v-if="this.isShow" icon="md-add" type="primary" size="small">
             新增
         </Button>
         <HosTable
@@ -36,6 +36,7 @@
 </template>
 
 <script>
+import { sessionStorage } from '@/lib/until'
 export default {
     data() {
         return {
@@ -74,6 +75,10 @@ export default {
                     },
                 },
                 {
+                    title: "价格",
+                    key: "price"
+                },
+                {
                     title: "操作",
                     key: "action",
                     fixed: "right",
@@ -81,7 +86,7 @@ export default {
                     render: (h, params) => {
                         return h("div", [
                             h(
-                                "Button",
+                                this.isShow ? "Button" : '',
                                 {
                                     props: {
                                         type: "primary",
@@ -99,7 +104,7 @@ export default {
                                 "编辑"
                             ),
                             h(
-                                "Button",
+                                this.isShow ? "Button" : '',
                                 {
                                     props: {
                                         type: "error",
@@ -118,13 +123,22 @@ export default {
                 },
             ],
             data: [],
+            users: {}
         };
     },
     created() {
         this.search();
+        this.users = sessionStorage.get('hospital_user')
     },
     activated () {
         this.search();
+        this.users = sessionStorage.get('hospital_user')
+        console.log('this.idShow :>> ', this.idShow);
+    },
+    computed: {
+       isShow() {
+           return this.users.professional !== '99'
+       } 
     },
     methods: {
         add() {

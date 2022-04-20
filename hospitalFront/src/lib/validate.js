@@ -43,6 +43,18 @@
         } else {
             return callback()
         }
+    },
+    // 价格
+    isPrice: (rule, value, callback) => {
+        if (value) {
+            if (/(^[1-9]\d*(\.\d{1,2})?$)|(^0(\.\d{1,2})?$)/.test(value)) {
+                callback()
+            } else {
+                return callback(new Error(rule.message))
+            }
+        } else {
+            return callback()
+        }
     }
 
 }
