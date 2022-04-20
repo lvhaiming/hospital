@@ -215,7 +215,7 @@ export default {
   },
   methods: {
     getDrugs() {
-      this.$http.post("/pharmacy/getPharmacyData", Object.assign(this.form)).then((res) => {
+      this.$http.post("/pharmacy/getPharmacyData", {}).then((res) => {
           this.drugs = res.data.data;
       });
     },
