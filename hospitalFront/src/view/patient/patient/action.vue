@@ -83,13 +83,15 @@
                     </FormItem>
                 </Col>
                 <Col span="8">
-                    <FormItem label="用药">
-                        <Input v-model="form.drugs" type="textarea" />
+                    <FormItem label="备注">
+                        <Input v-model="form.remarks" type="textarea"/>
                     </FormItem>
                 </Col>
                 <Col span="8">
-                    <FormItem label="备注">
-                        <Input v-model="form.remarks" type="textarea"/>
+                    <FormItem label="用药">
+                        <Select v-model="form.drugs" filterable multiple>
+                            <Option v-for="item in drugs" :value="item.id.toString()" :key="item.id + 'x'">{{ item.name }}</Option>
+                        </Select>
                     </FormItem>
                 </Col>
                 <Col span="8">
@@ -158,15 +160,7 @@ export default {
           {
             message: "请输入正确的年龄",
             trigger: "blur",
-            validator(rule, value, callback) {
-              if (value) {
-                if (/^([1-9]\d?|1[01]\d|120)$/.test(value)) {
-                  callback();
-                } else {
-                  return callback(new Error(rule.message));
-                }
-              }
-            },
+            validator: this.$validate.isAge
           },
         ],
         sex: [{ required: true, message: "请选择性别" }],
@@ -175,27 +169,34 @@ export default {
           {
             message: "请输入正确的手机号码",
             trigger: "blur",
-            validator(rule, value, callback) {
-              if (value) {
-                if (/^1\d{10}$/.test(value)) {
-                  callback();
-                } else {
-                  return callback(new Error(rule.message));
-                }
-              }
-            },
+            validator: this.$validate.isMobile
           },
         ],
-        idCard: [{ required: true, message: "请输入证件号" }],
+        idCard: [
+          { required: true, message: "请输入证件号" },
+          {
+            message: '请输入正确的证件号',
+            trigger: 'blur',
+            validator: this.$validate.isCard
+          }
+        ],
         department: [{ required: true, message: "请选择所在科室" }],
         category: [{ required: true, message: "请选择费别" }],
         startTime: [{ required: true, message: "请选择入院时间" }],
         native: [{ required: true, message: "请填写籍贯" }],
-        doctor: [{ required: true, message: "请输入主治医生" }],
+        doctor: [{ required: true, message: "请选择主治医生" }],
         diagnosis: [{ required: true, message: "请填写诊断描述" }],
         address: [{ required: true, message: "请填写居住地址" }],
-        cost: [{ required: true, message: "请填写费用" }],
+        cost: [
+          { required: true, message: "请填写费用" },
+          {
+            message: '请输入正确的费用',
+            trigger: 'blur',
+            validator: this.$validate.isPrice
+          }
+        ],
       },
+      drugs: []
     };
   },
   created() {
@@ -203,6 +204,9 @@ export default {
       this.getDetail();
     }
     this.changeData();
+    this.$nextTick(() => {
+      this.getDrugs()
+    })
   },
   computed: {
     modal() {
@@ -210,11 +214,17 @@ export default {
     },
   },
   methods: {
+    getDrugs() {
+      this.$http.post("/pharmacy/getPharmacyData", Object.assign(this.form)).then((res) => {
+          this.drugs = res.data.data;
+      });
+    },
     getDetail() {
       this.$http
         .post("/patient/getPatientData", { id: this.$route.query.id })
         .then((res) => {
           this.form = res.data.data[0];
+          this.form.drugs = this.form.drugs.split(',')
           this.changeDepartment(this.form.department)
         });
     },
@@ -222,6 +232,7 @@ export default {
       this.$refs.message.validate((valid) => {
         if (valid) {
           this.form.time = dateFormat(this.form.time);
+          this.form.drugs = this.form.drugs.join(',')
           let http = "";
           if (this.modal) {
             http = "/patient/addPatientData";
@@ -266,13 +277,10 @@ export default {
       }
     },
     changeDepartment (val) {
-        console.log('val :>> ', val);
         this.$http.post("/user/getUserData", {department: val}).then((res) => {
             this.$nextTick(() => {
                 this.doctor = []
                 this.doctor = res.data.data
-                console.log('this.doctor :>> ', this.doctor);
-                console.log('this.form :>> ', this.form);
             })
         });
     }

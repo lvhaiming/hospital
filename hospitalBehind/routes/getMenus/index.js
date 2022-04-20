@@ -86,7 +86,7 @@ class User {
     getPersonal (req, res) {
         let body = req.body // 获取参数
         let start = (body.pageNumber - 1) * body.pageSize || 0
-        let end = body.pageSize || 10
+        let end = body.pageSize || -1
         let professional = body.professional // 获取参数
         let params = {
             professional_id: professional || ''
