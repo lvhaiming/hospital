@@ -101,7 +101,7 @@ export default {
       submitStatus: false,
       options: {
         disabledDate(date) {
-          return date && date.valueOf() > Date.now();
+          return date.valueOf() < Date.now() - 60*60*24*1000;
         },
       },
       form: {

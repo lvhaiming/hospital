@@ -14,7 +14,7 @@ class User {
                 if (err) {
                     console.log(err)
                 } else {
-                    resolve(result[0].professional_auth.split(',')) // promise返回professional_auth处理后的数组
+                    resolve(result[0].professional_auth.split(',') ? result[0].professional_auth.split(',') : []) // promise返回professional_auth处理后的数组
                 }
             })
         })
