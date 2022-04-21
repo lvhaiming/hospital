@@ -23,6 +23,7 @@ class Patient {
             drugs: body.drugs || '',
             drugsNum: body.drugsNum || '',
             idCard: body.idCard || '',
+            patientStatus: body.patientStatus || '',
         }
         let sql = until.params(params, 'name')
         let limit =  body.pageSize ? ` limit ${start},${end};` : ''
@@ -136,6 +137,7 @@ class Patient {
             drugsStatus: body.drugsStatus || '',
             drugs: body.drugs || '',
             drugsNum: body.drugsNum || '',
+            patientStatus: body.patientStatus || '',
         }
         
         let sql = until.update(params)

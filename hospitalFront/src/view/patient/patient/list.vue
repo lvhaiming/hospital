@@ -14,6 +14,12 @@
                     <Option :value="2" key="2mn">已出院</Option>
                 </Select>
             </FormItem>
+            <FormItem label="就诊状态">
+                <Select clearable v-model="form.patientStatus" style="width:150px">
+                    <Option :value="1" key="1mns">未就诊</Option>
+                    <Option :value="2" key="2msn">已就诊</Option>
+                </Select>
+            </FormItem>
             <FormItem>
                 <Button @click="search(true)" icon="md-search" type="primary">
                     查询
@@ -43,7 +49,8 @@ export default {
                 name: '',
                 tel: '',
                 doctor: '',
-                hospitalStatus: ''
+                hospitalStatus: '',
+                patientStatus: ''
             },
             page: {
                 pageNumber: 1,
@@ -111,7 +118,7 @@ export default {
                     title: "操作",
                     key: "action",
                     fixed: "right",
-                    width: 160,
+                    width: 210,
                     render: (h, params) => {
                         return h("div", [
                             h(
@@ -142,6 +149,35 @@ export default {
                                     },
                                 },
                                 params.row.hospitalStatus == 1 ? '安排出院' : '安排住院'
+                            ),
+                            h(
+                                "Button",
+                                {
+                                    props: {
+                                        type: "primary",
+                                        size: "small",
+                                    },
+                                    style: {
+                                        marginRight: "10px",
+                                    },
+                                    on: {
+                                        click: () => {
+                                            let message = params.row.patientStatus == 1 ? '已就诊' : '更改为未就诊'
+                                            this.$Modal.confirm({
+                                                title: "提醒",
+                                                content: `确认${params.row.name}${message}？`,
+                                                cancelText: "取消",
+                                                onOk: () => {
+                                                    this.$http.post("/patient/editPatientData", Object.assign({id: params.row.id, patientStatus: params.row.patientStatus == 1 ? 2 : 1 })).then((res) => {
+                                                        this.search();
+                                                    })
+                                                },
+                                            });
+                                            
+                                        },
+                                    },
+                                },
+                                params.row.patientStatus == 1 ? '就诊' : '已就诊'
                             ),
                             h(
                                 "Button",

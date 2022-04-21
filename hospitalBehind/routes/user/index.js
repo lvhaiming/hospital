@@ -11,9 +11,9 @@ class User {
         let body = req.body
         let sql = ''
         if (body.username.length == 8) {
-            sql = `select name,professional,tel,password,department,posts,jobNum,id from user where jobNum=${body.username}`
+            sql = `select name,professional,tel,password,department,posts,jobNum,id,idCard,sex,tel from user where jobNum=${body.username}`
         } else {
-            sql = `select name,professional,tel,password,department,posts,jobNum,id from user where tel=${body.username}`
+            sql = `select name,professional,tel,password,department,posts,jobNum,id,idCard,sex,tel from user where tel=${body.username}`
         }
         this.connection.query(sql, (err, result) => {
             if (err) {
@@ -29,6 +29,9 @@ class User {
                             posts: message.posts,
                             jobNum: message.jobNum,
                             id: message.id,
+                            idCard: message.idCard,
+                            sex: message.sex,
+                            tel: message.tel,
                             code: '0000',
                             msg: '登录成功'
                         })

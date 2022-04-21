@@ -2,7 +2,7 @@
   <Dropdown @on-click="loginout">
         <a href="javascript:void(0)" style="color: #515a6e;">
             <Icon style="margin-top:-2px;" type="ios-contact" size="22"/>
-            <span class="text">{{ userMessage.name }}&nbsp;/&nbsp;{{ PROFESSIONAL[userMessage.professional] }}&nbsp;--&nbsp;{{ DEPARTMENT[userMessage.department] || '' }}({{ POSTS[userMessage.posts] || '' }})</span>
+            <span class="text">{{ userMessage.name }}&nbsp;/&nbsp;{{ PROFESSIONAL[userMessage.professional] }}&nbsp;--&nbsp;{{ DEPARTMENT[userMessage.department] || '' }}({{ POSTS[userMessage.posts] || '普通' }})</span>
             <Icon type="ios-arrow-down"></Icon>
         </a>
         <DropdownMenu slot="list">

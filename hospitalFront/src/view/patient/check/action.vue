@@ -3,29 +3,29 @@
         <h3 class="page-title">{{ modal ? '新增挂号' : '编辑挂号' }}</h3>
         <Form :model="form" :label-width="150" ref="message" style="margin-top: 20px;" :rules="formRules" inline>
             <Row>
-                <Col span="8">
+                <Col span="8" v-if="show">
                     <FormItem label="病患姓名" prop="name">
                         <Input v-model="form.name" />
                     </FormItem>
                 </Col>
-                <Col span="8">
+                <Col span="8"  v-if="show">
                     <FormItem label="年龄" prop="age">
                         <Input v-model="form.age" />
                     </FormItem>
                 </Col>
-                <Col span="8">
+                <Col span="8"  v-if="show">
                     <FormItem label="性别" prop="sex">
                         <Select clearable v-model="form.sex" style="width:150px">
                             <Option v-for="item in sex" :value="item.value" :key="item.value">{{ item.label }}</Option>
                         </Select>
                     </FormItem>
                 </Col>
-                <Col span="8">
+                <Col span="8"  v-if="show">
                     <FormItem label="手机号码" prop="tel">
                         <Input v-model="form.tel" :maxlength="11" />
                     </FormItem>
                 </Col>
-                <Col span="8">
+                <Col span="8"  v-if="show">
                     <FormItem label="证件号" prop="idCard">
                         <Input v-model="form.idCard" :maxlength="18" />
                     </FormItem>
@@ -49,14 +49,14 @@
                         </Select>
                     </FormItem>
                 </Col>
-                <Col span="8">
+                <Col span="8"  v-if="show">
                     <FormItem label="费别" prop="category">
                         <Select clearable v-model="form.category" style="width:150px">
                             <Option v-for="item in category" :value="item.value" :key="item.value">{{ item.label }}</Option>
                         </Select>
                     </FormItem>
                 </Col>
-                <Col span="8">
+                <Col span="8"  v-if="show">
                     <FormItem label="费用" prop="cost">
                         <Input v-model="form.cost" />
                     </FormItem>
@@ -88,6 +88,7 @@
 <script>
 import { SEX, DEPARTMENT, CATEGORY } from "../../../lib/enums";
 import { dateFormat } from "../../../lib/date";
+import { sessionStorage } from '@/lib/until'
 export default {
   data() {
     return {
@@ -149,9 +150,11 @@ export default {
         doctor: [{ required: true, message: "请输入主治医生" }],
         cost: [{ required: true, message: "请填写费用" }],
       },
+      users: {}
     };
   },
   created() {
+    this.users = sessionStorage.get('hospital_user')
     if (!this.modal) {
       this.getDetail();
     }
@@ -161,6 +164,9 @@ export default {
     modal() {
       return this.$route.params.action === "add";
     },
+    show() {
+      return this.users.professional !== '99'
+    }
   },
   methods: {
     getDetail() {
@@ -176,6 +182,14 @@ export default {
         if (valid) {
           this.form.time = dateFormat(this.form.time);
           let http = "";
+          if (!this.show) {
+            this.form.name = this.users.name
+            this.form.sex = this.users.sex
+            this.form.tel = this.users.tel
+            this.form.idCard = this.users.idCard
+            let a = this.form.idCard.slice(6)
+            this.form.age = (new Date().getFullYear()) - Number(a.slice(0,4))
+          }
           if (this.modal) {
             this.form.checkNum = new Date().getTime()
             http = "/patient/addPatientData";

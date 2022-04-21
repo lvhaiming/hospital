@@ -1,7 +1,7 @@
 <template>
     <section class="content">
         <h3 class="page-title">挂号</h3>
-        <Form :model="form" :label-width="90" inline>
+        <Form :model="form" :label-width="90" inline v-if="show">
             <FormItem label="病患姓名">
                 <Input v-model="form.name" />
             </FormItem>
@@ -29,7 +29,7 @@
             </FormItem>
         </Form>
         <Button @click="add" icon="md-add" type="primary" size="small">
-            新增
+            {{ show ? '新增' : '预约挂号' }}
         </Button>
         <HosTable
             @changeNo="search"
@@ -43,6 +43,7 @@
 <script>
 import { SEX, PROFESSIONAL, DEPARTMENT } from "../../../lib/enums";
 import { dateFormat } from "../../../lib/date";
+import { sessionStorage } from '@/lib/until'
 export default {
     data() {
         return {
@@ -51,7 +52,8 @@ export default {
                 tel: '',
                 professional: '',
                 department: '',
-                checkStatus: ''
+                checkStatus: '',
+                idCard: ''
             },
             page: {
                 pageNumber: 1,
@@ -159,15 +161,19 @@ export default {
             PROFESSIONAL,
             DEPARTMENT,
             department: [],
-            professional: []
+            professional: [],
+            users: {}
         };
     },
     created() {
+        this.users = sessionStorage.get('hospital_user')
         this.search();
         this.changeData()
     },
-    activated () {
-        this.search();
+    computed: {
+        show() {
+            return this.users.professional !== '99'
+        }
     },
     methods: {
         add() {
@@ -176,6 +182,10 @@ export default {
         search(flag) {
             if (flag) {
                 this.page.pageNumber = 1
+            }
+            if (!this.show) {
+                this.form.name = this.users.name
+                this.form.idCard = this.users.idCard
             }
             this.$http.post("/patient/getPatientData", Object.assign(this.form, this.page)).then((res) => {
                 this.data = res.data.data;
