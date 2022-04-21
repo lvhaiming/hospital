@@ -162,7 +162,7 @@ export default {
                                     },
                                     on: {
                                         click: () => {
-                                            let message = params.row.patientStatus == 1 ? '已就诊' : '更改为未就诊'
+                                            let message = params.row.patientStatus == 2 ? '已就诊' : '更改为未就诊'
                                             this.$Modal.confirm({
                                                 title: "提醒",
                                                 content: `确认${params.row.name}${message}？`,
@@ -177,7 +177,7 @@ export default {
                                         },
                                     },
                                 },
-                                params.row.patientStatus == 1 ? '就诊' : '已就诊'
+                                params.row.patientStatus == 2 ? '就诊' : '已就诊'
                             ),
                             h(
                                 "Button",

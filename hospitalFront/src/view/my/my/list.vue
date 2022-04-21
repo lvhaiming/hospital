@@ -66,6 +66,15 @@
                         <Input v-model="form.native" disabled />
                     </FormItem>
                 </Col>
+            </Row>
+            <Row>
+                <Col span="24">
+                    <FormItem label="详细信息">
+                        <Input v-model="form.message" disabled type="textarea" />
+                    </FormItem>
+                </Col>
+            </Row>
+            <Row>
                 <Col span="8">
                     <FormItem>
                         <Button @click="submit" type="primary">
@@ -105,7 +114,8 @@ export default {
                 posts: '',
                 time: '',
                 native: '',
-                idCard: ''
+                idCard: '',
+                message: ''
             },
             options: {
                 disabledDate (date) {
@@ -113,54 +123,7 @@ export default {
                 }
             },
             formRules: {
-                name: [{ required: true, message: '用户姓名不能为空' }],
                 password: [{ required: true, message: '请输入登录密码' }],
-                age: [
-                    { required: true, message: '年龄不能为空' },
-                    {
-                        message: '请输入正确的年龄',
-                        trigger: 'blur',
-                        validator: this.$validate.isAge
-                    }
-                ],
-                sex: [{ required: true, message: '请选择性别' }],
-                tel: [
-                    { required: true, message: '手机号码不能为空' },
-                    {
-                        message: '请输入正确的手机号码',
-                        trigger: 'blur',
-                        validator: this.$validate.isMobile
-                    }
-                ],
-                idCard: [
-                    { required: true, message: '证件号不能为空' },
-                    {
-                        message: '请输入正确的证件号',
-                        trigger: 'blur',
-                        validator: this.$validate.isCard
-                    }
-                ],
-                jobNum: [
-                    { required: true, message: '工号不能为空' },
-                    {
-                        message: '请输入正确的八位工号',
-                        trigger: 'blur',
-                        validator(rule, value, callback) {
-                            if (value) {
-                                if (/\d{8}$/.test(value)) {
-                                    callback()
-                                } else {
-                                    return callback(new Error(rule.message))
-                                }
-                            }
-                        }
-                    }
-                ],
-                professional: [{ required: true, message: '请选择职称' }],
-                department: [{ required: true, message: '请选择科室' }],
-                posts: [{ required: true, message: '请选择科室职位' }],
-                time: [{ required: true, message: '请选择入职时间' }],
-                native: [{ required: true, message: '请填写籍贯' }]
             },
             users: {}
         };
