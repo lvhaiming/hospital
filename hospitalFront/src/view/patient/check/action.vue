@@ -49,7 +49,7 @@
                         </Select>
                     </FormItem>
                 </Col>
-                <Col span="8"  v-if="show">
+                <!-- <Col span="8"  v-if="show">
                     <FormItem label="费别" prop="category">
                         <Select clearable v-model="form.category" style="width:150px">
                             <Option v-for="item in category" :value="item.value" :key="item.value">{{ item.label }}</Option>
@@ -60,7 +60,7 @@
                     <FormItem label="费用" prop="cost">
                         <Input v-model="form.cost" />
                     </FormItem>
-                </Col>
+                </Col> -->
                 <Col span="8">
                     <FormItem label="状态" prop="checkStatus">
                         <Select v-model="form.checkStatus" style="width:150px">

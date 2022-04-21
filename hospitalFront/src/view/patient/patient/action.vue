@@ -65,18 +65,13 @@
                     </FormItem>
                 </Col>
                 
-                <Col span="8">
+                <!-- <Col span="8">
                     <FormItem label="费别" prop="category">
                         <Select clearable disabled v-model="form.category" style="width:150px">
                             <Option v-for="item in category" :value="item.value" :key="item.value">{{ item.label }}</Option>
                         </Select>
                     </FormItem>
-                </Col>
-                <Col span="8">
-                    <FormItem label="费用" prop="cost">
-                        <Input v-model="form.cost" />
-                    </FormItem>
-                </Col>
+                </Col> -->
                 <Col span="8">
                     <FormItem label="诊断描述" prop="diagnosis">
                         <Input v-model="form.diagnosis" type="textarea" />
@@ -169,7 +164,6 @@ export default {
         address: "",
         doctor: "",
         diagnosis: "",
-        cost: "",
         advice: '',
         remarks: '',
         drugs: '',
