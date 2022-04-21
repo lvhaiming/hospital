@@ -1,6 +1,6 @@
 <template>
     <section class="content">
-        <h3 class="page-title">{{ modal ? '新增用户' : '编辑用户' }}</h3>
+        <h3 class="page-title">个人中心</h3>
         <Form :model="form" :label-width="150" ref="message" style="margin-top: 20px;" :rules="formRules">
             <Row>
                 <Col span="8">
@@ -13,7 +13,7 @@
                         <Input v-model="form.password" />
                     </FormItem>
                 </Col>
-                <Col span="8" v-if="!modal">
+                <Col span="8">
                     <FormItem label="年龄" prop="age">
                         <Input v-model="form.age" />
                     </FormItem>
@@ -23,11 +23,6 @@
                         <Select clearable v-model="form.sex" style="width:150px">
                             <Option v-for="item in sex" :value="item.value" :key="item.value">{{ item.label }}</Option>
                         </Select>
-                    </FormItem>
-                </Col>
-                <Col span="8">
-                    <FormItem label="手机号码" prop="tel">
-                        <Input v-model="form.tel" :maxlength="11" />
                     </FormItem>
                 </Col>
                 <Col span="8">
@@ -73,9 +68,6 @@
                 </Col>
                 <Col span="8">
                     <FormItem>
-                        <Button @click="cancel" style="margin-right: 20px;">
-                            取消
-                        </Button>
                         <Button @click="submit" type="primary">
                             确定
                         </Button>
@@ -89,6 +81,7 @@
 <script>
 import { SEX, PROFESSIONAL, DEPARTMENT, POSTS } from "../../../lib/enums";
 import { dateFormat } from "../../../lib/date";
+import { sessionStorage } from '@/lib/until'
 export default {
     data() {
         return {
@@ -106,7 +99,6 @@ export default {
                 password: '',
                 age: '',
                 sex: '',
-                tel: '',
                 jobNum: '',
                 professional: '',
                 department: '',
@@ -170,46 +162,38 @@ export default {
                 time: [{ required: true, message: '请选择入职时间' }],
                 native: [{ required: true, message: '请填写籍贯' }]
             },
+            users: {}
         };
     },
     created() {
-        if (!this.modal) {
-            this.getDetail()
-        }
+        this.users = sessionStorage.get('hospital_user')
+        this.getDetail()
         this.changeData()
     },
     computed: {
-        modal() {
-            return this.$route.params.action === 'add'
-        },
         show() {
             return this.form.professional !== '99'
         }
     },
     methods: {
         getDetail() {
-            this.$http.post("/user/getUserData", { id: this.$route.query.id }).then((res) => {
+            this.$http.post("/user/getUserData", { id: this.users.id }).then((res) => {
                 this.form = res.data.data[0]
             });
         },
         submit() {
             this.$refs.message.validate((valid) => {
                 if (valid) {
-                    this.form.time = dateFormat(this.form.time)
-                    this.form.jobNum = Number(this.form.jobNum)
-                    let http = ''
-                    if (this.modal) {
-                        http = '/user/addUserData'
-                        let a = this.form.idCard.slice(6)
-                        this.form.age = (new Date().getFullYear()) - Number(a.slice(0,4))
-                    } else {
-                        this.form.id = this.$route.query.id
-                        http = '/user/editUserData'
+                    if (this.show) {
+                        this.form.time = dateFormat(this.form.time)
                     }
+                    let http = ''
+                    this.form.id = this.users.id
+                    http = '/user/editUserData'
                     this.$http.post(http, this.form).then((res) => {
                         if (res.data.code === '0000') {
-                            this.$Message.success(res.data.msg);
-                            this.cancel()
+                            this.$Message.success('修改成功，请重新登录');
+                            this.$router.push('/')
                         } else {
                             this.$Message.error(res.data.msg);
                         }
@@ -218,9 +202,6 @@ export default {
                     this.$Message.error('请填写完整信息');
                 }
             })
-        },
-        cancel() {
-            this.$router.go(-1)
         },
         changeData() {
             for (let key in this.DEPARTMENT) {

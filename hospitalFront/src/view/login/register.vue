@@ -9,9 +9,9 @@
                 <FormItem label="手机号" prop="tel">
                     <Input v-model="formValidate.tel" placeholder="请输入手机号" :maxlength="11"></Input>
                 </FormItem>
-                <FormItem label="年龄" prop="age">
+                <!-- <FormItem label="年龄" prop="age">
                     <Input v-model="formValidate.age" placeholder="请输入年龄"></Input>
-                </FormItem>
+                </FormItem> -->
                 <FormItem label="性别" prop="sex">
                     <Select clearable v-model="formValidate.sex" style="width:150px">
                         <Option v-for="item in sex" :value="item.value" :key="item.value">{{ item.label }}</Option>
@@ -111,6 +111,8 @@ export default {
               }
               this.formValidate.jobNum = new Date().getTime()
               this.formValidate.professional = '99'
+              let a = this.formValidate.idCard.slice(6)
+              this.formValidate.age = (new Date().getFullYear()) - Number(a.slice(0,4))
               this.$http.post('/user/addUserData', this.formValidate).then(res => {
                   if (res.data.code === '0001') {
                       this.$Message.error('注册失败');

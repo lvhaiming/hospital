@@ -31,6 +31,8 @@ import Pharmacy from '@/view/pharmacy/pharmacy/list.vue'
 import PharmacyAction from '@/view/pharmacy/pharmacy/action.vue'
 import TakeMedicine from '@/view/pharmacy/takeMedicine/list.vue'
 
+import My from '@/view/my/my/list.vue'
+
 
 
 
@@ -221,6 +223,16 @@ export default new Router({
           path: '/pharmacy/takeMedicine/list',
           name: 'pharmacy_takeMedicine',
           component: TakeMedicine,
+          meta: {
+            keepAlive: true // 需要缓存
+          }
+        },
+        // 个人中心
+          // 个人中心
+        {
+          path: '/my/my/list',
+          name: 'my_my',
+          component: My,
           meta: {
             keepAlive: true // 需要缓存
           }

@@ -11,9 +11,9 @@ class User {
         let body = req.body
         let sql = ''
         if (body.username.length == 8) {
-            sql = `select name,professional,tel,password,department,posts,jobNum from user where jobNum=${body.username}`
+            sql = `select name,professional,tel,password,department,posts,jobNum,id from user where jobNum=${body.username}`
         } else {
-            sql = `select name,professional,tel,password,department,posts,jobNum from user where tel=${body.username}`
+            sql = `select name,professional,tel,password,department,posts,jobNum,id from user where tel=${body.username}`
         }
         this.connection.query(sql, (err, result) => {
             if (err) {
@@ -28,6 +28,7 @@ class User {
                             department: message.department,
                             posts: message.posts,
                             jobNum: message.jobNum,
+                            id: message.id,
                             code: '0000',
                             msg: '登录成功'
                         })
@@ -111,7 +112,6 @@ class User {
         let sql = until.add(params)
         this.connection.query(`insert into user${sql};`, (err, result) => {
             if (err) {
-                console.log(err)
                 let ms = ''
                 if (err.sqlMessage.indexOf('jobNum') > -1) {
                     ms = '工号'
@@ -151,10 +151,15 @@ class User {
         let sql = until.update(params)
         this.connection.query(`update user set ${sql} where id=${body.id};`, (err, result) => {
             if (err) {
-                console.log(err)
+                let ms = ''
+                if (err.sqlMessage.indexOf('jobNum') > -1) {
+                    ms = '工号'
+                } else {
+                    ms = '手机号'
+                }
                 res.send({
                     code: err.errno,
-                    msg: '修改失败'
+                    msg: `编辑失败，${ms}已存在`
                 })
             } else {
                 res.send({
