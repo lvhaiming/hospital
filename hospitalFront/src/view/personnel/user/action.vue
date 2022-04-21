@@ -48,7 +48,7 @@
                     </FormItem>
                 </Col>
                 <Col span="8" v-if="show">
-                    <FormItem label="所在科室">
+                    <FormItem label="科室">
                         <Select clearable v-model="form.department" style="width:150px">
                             <Option v-for="item in department" :value="item.value" :key="item.value">{{ item.label }}</Option>
                         </Select>
@@ -165,8 +165,8 @@ export default {
                     }
                 ],
                 professional: [{ required: true, message: '请选择职称' }],
-                department: [{ required: true, message: '请选择所在科室' }],
-                posts: [{ required: true, message: '请选择所在科室职位' }],
+                department: [{ required: true, message: '请选择科室' }],
+                posts: [{ required: true, message: '请选择科室职位' }],
                 time: [{ required: true, message: '请选择入职时间' }],
                 native: [{ required: true, message: '请填写籍贯' }]
             },

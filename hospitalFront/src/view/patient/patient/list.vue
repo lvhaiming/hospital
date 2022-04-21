@@ -82,14 +82,14 @@ export default {
                     key: "tel"
                 },
                 {
-                    title: "所在科室",
+                    title: "科室",
                     key: "department",
                     render: (h, params) => {
                         return h("span", {}, DEPARTMENT[params.row.department]);
                     },
                 },
                 {
-                    title: "入院时间",
+                    title: "就诊时间",
                     key: "startTime",
                     render: (h, params) => {
                         return h(

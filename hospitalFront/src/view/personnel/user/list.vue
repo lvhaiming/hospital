@@ -16,7 +16,7 @@
                     <Option v-for="item in professional.filter(i => { return i.value !== '99'})" :value="item.value" :key="item.value">{{ item.label }}</Option>
                 </Select>
             </FormItem>
-            <FormItem label="所在科室">
+            <FormItem label="科室">
                 <Select clearable v-model="form.department" style="width:150px">
                     <Option v-for="item in department" :value="item.value" :key="item.value">{{ item.label }}</Option>
                 </Select>
@@ -93,7 +93,7 @@ export default {
                     },
                 },
                 {
-                    title: "所在科室",
+                    title: "科室",
                     key: "department",
                     render: (h, params) => {
                         return h("span", {}, DEPARTMENT[params.row.department]);

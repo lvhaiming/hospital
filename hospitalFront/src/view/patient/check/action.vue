@@ -8,7 +8,7 @@
                         <Input v-model="form.name" />
                     </FormItem>
                 </Col>
-                <Col span="8"  v-if="show">
+                <Col span="8"  v-if="!modal">
                     <FormItem label="年龄" prop="age">
                         <Input v-model="form.age" />
                     </FormItem>
@@ -31,14 +31,14 @@
                     </FormItem>
                 </Col>
                 <Col span="8">
-                    <FormItem label="所在科室" prop="department">
+                    <FormItem label="科室" prop="department">
                         <Select clearable v-model="form.department" style="width:150px" @on-change="changeDepartment">
                             <Option v-for="item in department" :value="item.value" :key="item.value">{{ item.label }}</Option>
                         </Select>
                     </FormItem>
                 </Col>
                 <Col span="8">
-                    <FormItem label="入院时间" prop="startTime">
+                    <FormItem label="就诊时间" prop="startTime">
                         <DatePicker v-model="form.startTime" type="date" :options="options" placeholder="Select date" style="width: 200px"></DatePicker>
                     </FormItem>
                 </Col>
@@ -61,7 +61,7 @@
                         <Input v-model="form.cost" />
                     </FormItem>
                 </Col> -->
-                <Col span="8">
+                <Col span="8" v-if="!modal">
                     <FormItem label="状态" prop="checkStatus">
                         <Select v-model="form.checkStatus" style="width:150px">
                             <Option value="1" key="checkStatus1">挂号</Option>
@@ -144,9 +144,9 @@ export default {
             validator: this.$validate.isCard
           }
         ],
-        department: [{ required: true, message: "请选择所在科室" }],
+        department: [{ required: true, message: "请选择科室" }],
         category: [{ required: true, message: "请选择费别" }],
-        startTime: [{ required: true, message: "请选择入院时间" }],
+        startTime: [{ required: true, message: "请选择就诊时间" }],
         doctor: [{ required: true, message: "请输入主治医生" }],
         cost: [{ required: true, message: "请填写费用" }],
       },
@@ -187,11 +187,12 @@ export default {
             this.form.sex = this.users.sex
             this.form.tel = this.users.tel
             this.form.idCard = this.users.idCard
-            let a = this.form.idCard.slice(6)
-            this.form.age = (new Date().getFullYear()) - Number(a.slice(0,4))
           }
+          let a = this.form.idCard.slice(6)
+          this.form.age = (new Date().getFullYear()) - Number(a.slice(0,4))
           if (this.modal) {
             this.form.checkNum = new Date().getTime()
+            this.form.checkStatus = '1'
             http = "/patient/addPatientData";
           } else {
             this.form.id = this.$route.query.id;

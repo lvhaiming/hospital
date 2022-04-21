@@ -56,7 +56,7 @@ export default {
                     },
                 },
                 {
-                    title: "所在科室",
+                    title: "科室",
                     key: "department",
                     render: (h, params) => {
                         return h("span", {}, DEPARTMENT[params.row.department]);

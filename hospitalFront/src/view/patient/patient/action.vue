@@ -31,7 +31,7 @@
                     </FormItem>
                 </Col>
                 <Col span="8">
-                    <FormItem label="所在科室" prop="department">
+                    <FormItem label="科室" prop="department">
                         <Select clearable disabled v-model="form.department" style="width:150px">
                             <Option v-for="item in department" :value="item.value" :key="item.value">{{ item.label }}</Option>
                         </Select>
@@ -48,7 +48,7 @@
                     </FormItem>
                 </Col>
                 <Col span="8">
-                    <FormItem label="入院时间">
+                    <FormItem label="就诊时间">
                         <DatePicker v-model="form.startTime" type="date" :options="options" placeholder="Select date" style="width: 150px"></DatePicker>
                     </FormItem>
                 </Col>
@@ -198,9 +198,9 @@ export default {
             validator: this.$validate.isCard
           }
         ],
-        department: [{ required: true, message: "请选择所在科室" }],
+        department: [{ required: true, message: "请选择科室" }],
         category: [{ required: true, message: "请选择费别" }],
-        startTime: [{ required: true, message: "请选择入院时间" }],
+        startTime: [{ required: true, message: "请选择就诊时间" }],
         native: [{ required: true, message: "请填写籍贯" }],
         doctor: [{ required: true, message: "请选择主治医生" }],
         diagnosis: [{ required: true, message: "请填写诊断描述" }],
