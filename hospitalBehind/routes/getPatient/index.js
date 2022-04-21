@@ -17,7 +17,12 @@ class Patient {
             tel: body.tel || '',
             checkNum: body.checkNum || '',
             department: body.department || '',
-            checkStatus: body.checkStatus || ''
+            checkStatus: body.checkStatus || '',
+            doctor: body.doctor || '',
+            hospitalStatus: body.hospitalStatus || '',
+            drugs: body.drugs || '',
+            drugsNum: body.drugsNum || '',
+            idCard: body.idCard || '',
         }
         let sql = until.params(params, 'name')
         let limit =  body.pageSize ? ` limit ${start},${end};` : ''
@@ -83,7 +88,9 @@ class Patient {
             idCard: body.idCard || '',
             category: body.category || '',
             checkNum: body.checkNum || '',
-            checkStatus: body.checkStatus || ''
+            checkStatus: body.checkStatus || '',
+            drugs: body.drugs || '',
+            drugsNum: body.drugsNum || '',
         }
         
         let sql = until.add(params)
@@ -124,7 +131,11 @@ class Patient {
             drugs: body.drugs || '',
             idCard: body.idCard || '',
             category: body.category || '',
-            checkStatus: body.checkStatus || ''
+            checkStatus: body.checkStatus || '',
+            hospitalStatus: body.hospitalStatus || '',
+            drugsStatus: body.drugsStatus || '',
+            drugs: body.drugs || '',
+            drugsNum: body.drugsNum || '',
         }
         
         let sql = until.update(params)

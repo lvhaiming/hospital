@@ -8,9 +8,10 @@
             <FormItem label="手机号码">
                 <Input v-model="form.tel" />
             </FormItem>
-            <FormItem label="所在科室">
-                <Select clearable v-model="form.department" style="width:150px">
-                    <Option v-for="item in department" :value="item.value" :key="item.value">{{ item.label }}</Option>
+            <FormItem label="住院状态">
+                <Select clearable v-model="form.hospitalStatus" style="width:150px">
+                    <Option :value="1" key="1mn">已入院</Option>
+                    <Option :value="2" key="2mn">已出院</Option>
                 </Select>
             </FormItem>
             <FormItem>
@@ -34,15 +35,15 @@
 <script>
 import { SEX, PROFESSIONAL, DEPARTMENT } from "../../../lib/enums";
 import { dateFormat } from "../../../lib/date";
+import { sessionStorage } from '@/lib/until'
 export default {
     data() {
         return {
             form: {
                 name: '',
                 tel: '',
-                professional: '',
-                department: '',
-                checkStatus: '1'
+                doctor: '',
+                hospitalStatus: ''
             },
             page: {
                 pageNumber: 1,
@@ -110,7 +111,7 @@ export default {
                     title: "操作",
                     key: "action",
                     fixed: "right",
-                    width: 80,
+                    width: 160,
                     render: (h, params) => {
                         return h("div", [
                             h(
@@ -122,6 +123,35 @@ export default {
                                     },
                                     style: {
                                         marginRight: "10px",
+                                    },
+                                    on: {
+                                        click: () => {
+                                            let message = params.row.hospitalStatus == 2 ? '住院' : '出院'
+                                            this.$Modal.confirm({
+                                                title: "提醒",
+                                                content: `确认安排${params.row.name}${message}？`,
+                                                cancelText: "取消",
+                                                onOk: () => {
+                                                    this.$http.post("/patient/editPatientData", Object.assign({id: params.row.id, hospitalStatus: params.row.hospitalStatus == 1 ? 2 : 1 })).then((res) => {
+                                                        this.search();
+                                                    })
+                                                },
+                                            });
+                                            
+                                        },
+                                    },
+                                },
+                                params.row.hospitalStatus == 1 ? '安排出院' : '安排住院'
+                            ),
+                            h(
+                                "Button",
+                                {
+                                    props: {
+                                        type: "primary",
+                                        size: "small",
+                                    },
+                                    style: {
+                                        // marginRight: "10px",
                                     },
                                     on: {
                                         click: () => {
@@ -172,6 +202,7 @@ export default {
             if (flag) {
                 this.page.pageNumber = 1
             }
+            this.form.doctor = sessionStorage.get('hospital_user').jobNum
             this.$http.post("/patient/getPatientData", Object.assign(this.form, this.page)).then((res) => {
                 this.data = res.data.data;
                 this.page = res.data.page;

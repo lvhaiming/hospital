@@ -1,7 +1,7 @@
 <template>
     <section class="content">
         <h3 class="page-title">{{ modal ? '新增病患' : '编辑病患' }}</h3>
-        <Form :model="form" :label-width="150" ref="message" style="margin-top: 20px;" :rules="formRules" inline>
+        <Form :model="form" :label-width="80" ref="message" style="margin-top: 20px;" :rules="formRules" inline>
             <Row>
                 <Col span="8">
                     <FormItem label="病患姓名" prop="name">
@@ -48,13 +48,13 @@
                     </FormItem>
                 </Col>
                 <Col span="8">
-                    <FormItem label="入院时间" prop="startTime">
-                        <DatePicker v-model="form.startTime" type="date" :options="options" placeholder="Select date" style="width: 200px"></DatePicker>
+                    <FormItem label="入院时间">
+                        <DatePicker v-model="form.startTime" type="date" :options="options" placeholder="Select date" style="width: 150px"></DatePicker>
                     </FormItem>
                 </Col>
                 <Col span="8">
                     <FormItem label="出院时间" prop="endTime">
-                        <DatePicker v-model="form.endTime" type="date" :options="options" placeholder="Select date" style="width: 200px"></DatePicker>
+                        <DatePicker v-model="form.endTime" type="date" :options="options1" placeholder="Select date" style="width: 170px"></DatePicker>
                     </FormItem>
                 </Col>
                 <Col span="8">
@@ -87,30 +87,48 @@
                         <Input v-model="form.remarks" type="textarea"/>
                     </FormItem>
                 </Col>
-                <Col span="8">
-                    <FormItem label="用药">
-                        <Select v-model="form.drugs" filterable multiple>
-                            <Option v-for="item in drugs" :value="item.id.toString()" :key="item.id + 'x'">{{ item.name }}</Option>
-                        </Select>
-                    </FormItem>
-                </Col>
+                
                 <Col span="8">
                     <FormItem label="医嘱">
                         <Input v-model="form.advice" type="textarea"/>
                     </FormItem>
                 </Col>
-                <Col span="8">
-                    <FormItem>
-                        <Button @click="cancel" style="margin-right: 20px;">
-                            取消
-                        </Button>
-                        <Button @click="submit" type="primary">
-                            确定
-                        </Button>
-                    </FormItem>
-                </Col>
+                
             </Row>
-            
+            <Row>
+              <Col span="24">
+                <FormItem label="用药">
+                  <Row v-for="(items, index) in drugsNum" :key="index + 'mhs'" style="margin-bottom: 6px;">
+                    <Col span="16">
+                      <Select v-model="items.name" filterable clearable>
+                        <Option v-for="item in drugs" :value="item.id.toString()" :key="item.id + 'x'">{{ item.name }}</Option>
+                      </Select>
+                    </Col>
+                    <Col span="3" offset="1">
+                      <Input v-model="items.num" type="text"/>
+                    </Col>
+                    <Col span="3">
+                      <div style="display: flex;">
+                        <span style="margin-left: 15px;font-size: 24px;cursor: pointer;" @click="addDrugs">+</span>
+                        <span style="margin-left: 15px;font-size: 26px;cursor: pointer;" @click="deleteDrugs(index)" v-if="index > 0">-</span>
+                      </div>
+                    </Col>
+                  </Row>
+                </FormItem>
+              </Col>
+            </Row>
+            <Row style="margin-top: 20px;">
+              <Col span="8">
+                  <FormItem>
+                      <Button @click="cancel" style="margin-right: 20px;">
+                          取消
+                      </Button>
+                      <Button @click="submit" type="primary">
+                          确定
+                      </Button>
+                  </FormItem>
+              </Col>
+            </Row>
         </Form>
     </section>
 </template>
@@ -134,6 +152,11 @@ export default {
           return date && date.valueOf() > Date.now();
         },
       },
+      options1: {
+        disabledDate(date) {
+          return date && date.valueOf() <= Date.now() - 60*60*24*1000;
+        },
+      },
       form: {
         name: "",
         age: "",
@@ -151,7 +174,8 @@ export default {
         remarks: '',
         drugs: '',
         idCard: '',
-        category: ''
+        category: '',
+        drugsNum: ''
       },
       formRules: {
         name: [{ required: true, message: "用户名称不能为空" }],
@@ -196,7 +220,14 @@ export default {
           }
         ],
       },
-      drugs: []
+      drugs: [],
+      drugsObj: {},
+      drugsNum: [
+        {
+          name: '',
+          num: ''
+        }
+      ]
     };
   },
   created() {
@@ -214,9 +245,21 @@ export default {
     },
   },
   methods: {
+    addDrugs() {
+      this.drugsNum.push({
+        name: '',
+        num: ''
+      })
+    },
+    deleteDrugs(index) {
+      this.drugsNum.splice(index, 1)
+    },
     getDrugs() {
       this.$http.post("/pharmacy/getPharmacyData", {}).then((res) => {
           this.drugs = res.data.data;
+          this.drugs.forEach(item => {
+            this.drugsObj[item.id.toString()] = item.name
+          })
       });
     },
     getDetail() {
@@ -225,6 +268,17 @@ export default {
         .then((res) => {
           this.form = res.data.data[0];
           this.form.drugs = this.form.drugs.split(',')
+          this.form.drugsNum = this.form.drugsNum.split(',')
+          if (this.form.drugs.length > 0) {
+            this.drugsNum[0].name = this.form.drugs[0]
+            this.drugsNum[0].num = this.form.drugsNum[0]
+            this.form.drugs.slice(1).forEach((item, index) => {
+              this.drugsNum.push({
+                name: item,
+                num: this.form.drugsNum[index + 1]
+              })
+            })
+          }
           this.changeDepartment(this.form.department)
         });
     },
@@ -232,7 +286,20 @@ export default {
       this.$refs.message.validate((valid) => {
         if (valid) {
           this.form.time = dateFormat(this.form.time);
-          this.form.drugs = this.form.drugs.join(',')
+          let d = []
+          let dNum = []
+          this.drugsNum.forEach(item => {
+            if (item.name) {
+              d.push(item.name)
+              if (!item.num) {
+                dNum.push('1')
+              } else {
+                dNum.push(item.num)
+              }
+            }
+          })
+          this.form.drugs = d.join(',')
+          this.form.drugsNum = dNum.join(',')
           let http = "";
           if (this.modal) {
             http = "/patient/addPatientData";

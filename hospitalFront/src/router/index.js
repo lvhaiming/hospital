@@ -29,6 +29,8 @@ import SchedulingAction from '@/view/scheduling/baseAction'
 
 import Pharmacy from '@/view/pharmacy/pharmacy/list.vue'
 import PharmacyAction from '@/view/pharmacy/pharmacy/action.vue'
+import TakeMedicine from '@/view/pharmacy/takeMedicine/list.vue'
+
 
 
 
@@ -98,19 +100,19 @@ export default new Router({
             }
         },
 
-        // 入院管理
+        // 挂号管理
           // 挂号
         {
-          path: '/patient/check/list',
-          name: 'patient_check',
+          path: '/check/check/list',
+          name: 'check_check',
           component: Check,
           meta: {
             keepAlive: true // 需要缓存
           }
         },
         {
-          path: '/patient/check/:action',
-          name: 'patient_check_action',
+          path: '/check/check/:action',
+          name: 'check_check_action',
           component: CheckAction,
           meta: {
             keepAlive: true // 需要缓存
@@ -197,8 +199,8 @@ export default new Router({
             keepAlive: true // 需要缓存
           }
         },
-        // 排班管理
-          // 排班管理
+        // 药房管理
+          // 药房管理
         {
           path: '/pharmacy/pharmacy/list',
           name: 'pharmacy_pharmacy',
@@ -215,7 +217,14 @@ export default new Router({
             keepAlive: true // 需要缓存
           }
         },
-        
+        {
+          path: '/pharmacy/takeMedicine/list',
+          name: 'pharmacy_takeMedicine',
+          component: TakeMedicine,
+          meta: {
+            keepAlive: true // 需要缓存
+          }
+        },
       ]
     }
   ]
