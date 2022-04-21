@@ -234,13 +234,10 @@ export default {
       }
     },
     changeDepartment (val) {
-        console.log('val :>> ', val);
         this.$http.post("/user/getUserData", {department: val}).then((res) => {
             this.$nextTick(() => {
                 this.doctor = []
                 this.doctor = res.data.data
-                console.log('this.doctor :>> ', this.doctor);
-                console.log('this.form :>> ', this.form);
             })
         });
     }

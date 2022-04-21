@@ -80,7 +80,6 @@ export default {
                     return this.$Message.error('两次密码不一样');
                 }
                 this.$http.post("/user/getUserData", Object.assign({tel: this.formValidate.tel})).then((res) => {
-                    console.log('res.data :>> ', res.data);
                     let data = res.data.data
                     if (data.length == 0) {
                         return this.$Message.error('用户不存在');

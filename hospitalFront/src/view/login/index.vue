@@ -47,7 +47,6 @@ export default {
             this.$refs[name].validate((valid) => {
                 if (valid) {
                     this.$http.post('/login', this.formValidate).then(res => {
-                        console.log('res :>> ', res);
                         if (res.data.code === '0001') {
                             this.$Message.error(res.data.msg);
                         } else {
