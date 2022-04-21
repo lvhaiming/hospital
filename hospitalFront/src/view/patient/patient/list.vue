@@ -239,6 +239,7 @@ export default {
                 this.page.pageNumber = 1
             }
             this.form.doctor = sessionStorage.get('hospital_user').jobNum
+            this.form.checkStatus = '1'
             this.$http.post("/patient/getPatientData", Object.assign(this.form, this.page)).then((res) => {
                 this.data = res.data.data;
                 this.page = res.data.page;
