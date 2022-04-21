@@ -1,37 +1,39 @@
 <template>
-    <section class="form">
-        <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="80">
-            <h1>患者注册</h1>
-            <FormItem label="用户名" prop="name">
-                <Input v-model="formValidate.name" placeholder="请输入用户名"></Input>
-            </FormItem>
-            <FormItem label="手机号" prop="tel">
-                <Input v-model="formValidate.tel" placeholder="请输入手机号" :maxlength="11"></Input>
-            </FormItem>
-            <FormItem label="年龄" prop="age">
-                <Input v-model="formValidate.age" placeholder="请输入年龄"></Input>
-            </FormItem>
-            <FormItem label="性别" prop="sex">
-                <Select clearable v-model="formValidate.sex" style="width:150px">
-                    <Option v-for="item in sex" :value="item.value" :key="item.value">{{ item.label }}</Option>
-                </Select>
-            </FormItem>
-            <FormItem label="证件号" prop="idCard">
-                <Input v-model="formValidate.idCard" placeholder="请输入证件号" :maxlength="18"></Input>
-            </FormItem>
-            <FormItem label="密码" prop="password">
-                <Input v-model="formValidate.password" placeholder="请输入密码" type="password"></Input>
-            </FormItem>
-            <FormItem label="确认密码" prop="password2">
-                <Input v-model="formValidate.password2" placeholder="请再次输入密码" type="password"></Input>
-            </FormItem>
-            <FormItem>
-                <Button type="primary" @click="register('formValidate')" style="width: 240px;">注册</Button>
-            </FormItem>
-            <div style="text-align: center;">
-                <a @click="login">返回登录</a>
-            </div>
-        </Form>
+    <section class="formAll">
+        <div class="form">
+            <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="80">
+                <h1>患者注册</h1>
+                <FormItem label="用户名" prop="name">
+                    <Input v-model="formValidate.name" placeholder="请输入用户名"></Input>
+                </FormItem>
+                <FormItem label="手机号" prop="tel">
+                    <Input v-model="formValidate.tel" placeholder="请输入手机号" :maxlength="11"></Input>
+                </FormItem>
+                <FormItem label="年龄" prop="age">
+                    <Input v-model="formValidate.age" placeholder="请输入年龄"></Input>
+                </FormItem>
+                <FormItem label="性别" prop="sex">
+                    <Select clearable v-model="formValidate.sex" style="width:150px">
+                        <Option v-for="item in sex" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                    </Select>
+                </FormItem>
+                <FormItem label="证件号" prop="idCard">
+                    <Input v-model="formValidate.idCard" placeholder="请输入证件号" :maxlength="18"></Input>
+                </FormItem>
+                <FormItem label="密码" prop="password">
+                    <Input v-model="formValidate.password" placeholder="请输入密码" type="password"></Input>
+                </FormItem>
+                <FormItem label="确认密码" prop="password2">
+                    <Input v-model="formValidate.password2" placeholder="请再次输入密码" type="password"></Input>
+                </FormItem>
+                <FormItem>
+                    <Button type="primary" @click="register('formValidate')" style="width: 240px;">注册</Button>
+                </FormItem>
+                <div style="text-align: center;">
+                    <a @click="login">返回登录</a>
+                </div>
+            </Form>
+        </div>
     </section>
 </template>
 <script>
@@ -137,16 +139,22 @@ export default {
 }
 </script>
 <style scoped lang="less">
-    .form {
-        width: 400px;
-        margin: auto;
-        padding-top: 16vh;
-        h1 {
-            text-align: center;
-            margin-bottom: 16px;
-        }
-        .ivu-input-wrapper {
-            width: 240px;
-        }
+.formAll {
+    background-image: url(../../assets/img/bg.jpg);
+    background-size: 100% 100%;
+    width: 100%;
+    height: 100%;
+}
+.form {
+    width: 400px;
+    margin: auto;
+    padding-top: 16vh;
+    h1 {
+        text-align: center;
+        margin-bottom: 16px;
     }
+    .ivu-input-wrapper {
+        width: 240px;
+    }
+}
 </style>

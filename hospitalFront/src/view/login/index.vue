@@ -1,21 +1,23 @@
 <template>
-    <section class="form">
-        <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="80">
-            <h1>医院信息管理平台</h1>
-            <FormItem label="用户名" prop="username">
-                <Input v-model="formValidate.username" placeholder="请输入工号或者手机号"></Input>
-            </FormItem>
-            <FormItem label="密码" prop="password">
-                <Input v-model="formValidate.password" placeholder="请输入密码" type="password"></Input>
-            </FormItem>
-            <FormItem>
-                <Button type="primary" @click="login('formValidate')" style="width: 240px;">登录</Button>
-            </FormItem>
-            <div style="text-align: center;">
-                <a @click="register">患者注册</a>
-                <a @click="forget" style="margin-left: 40px;">忘记密码？</a>
-            </div>
-        </Form>
+    <section class="formAll">
+        <div class="form">
+            <Form ref="formValidate" :model="formValidate" :rules="ruleValidate" :label-width="80">
+                <h1>医院信息管理平台</h1>
+                <FormItem label="用户名" prop="username">
+                    <Input v-model="formValidate.username" placeholder="请输入工号或者手机号"></Input>
+                </FormItem>
+                <FormItem label="密码" prop="password">
+                    <Input v-model="formValidate.password" placeholder="请输入密码" type="password"></Input>
+                </FormItem>
+                <FormItem>
+                    <Button type="primary" @click="login('formValidate')" style="width: 240px;">登录</Button>
+                </FormItem>
+                <div style="text-align: center;">
+                    <a @click="register">患者注册</a>
+                    <a @click="forget" style="margin-left: 40px;">忘记密码？</a>
+                </div>
+            </Form>
+        </div>
     </section>
 </template>
 <script>
@@ -69,10 +71,18 @@ export default {
 }
 </script>
 <style scoped lang="less">
+    .formAll {
+        background-image: url(../../assets/img/bg.jpg);
+        background-size: 100% 100%;
+        width: 100%;
+        height: 100%;
+    }
     .form {
         width: 400px;
         margin: auto;
         padding-top: 25vh;
+        height: 100%;
+        
         h1 {
             text-align: center;
             margin-bottom: 16px;
