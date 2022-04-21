@@ -130,7 +130,7 @@ export default {
                                     },
                                     on: {
                                         click: () => {
-                                            this.$router.push({ path: '/patient/check/edit', query: { id: params.row.id } })
+                                            this.$router.push({ path: '/check/check/edit', query: { id: params.row.id } })
                                         },
                                     },
                                 },
@@ -171,7 +171,7 @@ export default {
     },
     methods: {
         add() {
-            this.$router.push('/patient/check/add')
+            this.$router.push('/check/check/add')
         },
         search(flag) {
             if (flag) {
