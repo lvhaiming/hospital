@@ -33,6 +33,9 @@ import TakeMedicine from '@/view/pharmacy/takeMedicine/list.vue'
 
 import My from '@/view/my/my/list.vue'
 
+import DoctorMessage from '@/view/doctorMessage/message/list.vue'
+import DoctorMessageDetail from '@/view/doctorMessage/message/action.vue'
+
 
 
 
@@ -233,6 +236,24 @@ export default new Router({
           path: '/my/my/list',
           name: 'my_my',
           component: My,
+          meta: {
+            keepAlive: true // 需要缓存
+          }
+        },
+        // 医生信息
+          // 医生信息
+        {
+          path: '/doctorMessage/message/list',
+          name: 'doctorMessage_message',
+          component: DoctorMessage,
+          meta: {
+            keepAlive: true // 需要缓存
+          }
+        },
+        {
+          path: '/doctorMessage/message/detail',
+          name: 'doctorMessage_message_detail',
+          component: DoctorMessageDetail,
           meta: {
             keepAlive: true // 需要缓存
           }

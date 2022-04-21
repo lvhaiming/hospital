@@ -68,7 +68,7 @@ export default {
             department: '',
             DEPARTMENT,
             formRules: {
-                years: [{ required: true, message: '用户名称不能为空' }],
+                years: [{ required: true, message: '用户姓名不能为空' }],
                 months: [{ required: true, message: '请输入登录密码' }],
             },
             mode: '',

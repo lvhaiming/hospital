@@ -45,7 +45,7 @@
                 <Col span="8">
                     <FormItem label="主治医生" prop="doctor">
                         <Select v-model="form.doctor" style="width:150px">
-                            <Option v-for="item in doctor" :value="item.jobNum" :key="item.id">{{ item.name }}</Option>
+                            <Option v-for="item in doctor" :value="item.jobNum" :key="item.id">{{ item.name }}{{ item.professional == '11' ? '(专家)' : '' }}</Option>
                         </Select>
                     </FormItem>
                 </Col>
@@ -118,7 +118,7 @@ export default {
         cost: ''
       },
       formRules: {
-        name: [{ required: true, message: "用户名称不能为空" }],
+        name: [{ required: true, message: "用户姓名不能为空" }],
         age: [
             { required: true, message: '年龄不能为空' },
             {

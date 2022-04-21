@@ -4,7 +4,7 @@
         <Form :model="form" :label-width="150" ref="message" style="margin-top: 20px;" :rules="formRules">
             <Row>
                 <Col span="8">
-                    <FormItem label="药品名称" prop="name">
+                    <FormItem label="药品姓名" prop="name">
                         <Input v-model="form.name" />
                     </FormItem>
                 </Col>
@@ -79,7 +79,7 @@ export default {
                 price: ''
             },
             formRules: {
-                name: [{ required: true, message: '药品名称不能为空' }],
+                name: [{ required: true, message: '药品姓名不能为空' }],
                 norms: [{ required: true, message: '请填写药品规格' }],
                 treatment: [{ required: true, message: '请填写药品功能主治' }],
                 uses: [{ required: true, message: '请填写药品用法用量' }],

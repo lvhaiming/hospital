@@ -172,7 +172,7 @@ export default {
         drugsNum: ''
       },
       formRules: {
-        name: [{ required: true, message: "用户名称不能为空" }],
+        name: [{ required: true, message: "用户姓名不能为空" }],
         age: [
           { required: true, message: "年龄不能为空" },
           {

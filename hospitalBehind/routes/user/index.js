@@ -64,7 +64,7 @@ class User {
             professional: body.professional || '',
             department: body.department || ''
         }
-        let sql = until.params(params, 'name')
+        let sql = until.params(params, 'name', body.ifDoctor)
         let limit =  body.pageSize ? ` limit ${start},${end};` : ''
         let p = new Promise((resolve, reject) => {
             this.connection.query(`select * from user ${sql}${limit}`, (err, result) => {
@@ -93,7 +93,7 @@ class User {
                 }
             })
         })
-    }
+    } 
 
     // 人员管理-用户管理-新增用户信息
     addUserData(req, res) {
@@ -111,6 +111,7 @@ class User {
             jobNum: body.jobNum || '',
             password: body.password || '',
             idCard: body.idCard || '',
+            message: body.message || '',
         }
         let sql = until.add(params)
         this.connection.query(`insert into user${sql};`, (err, result) => {
@@ -150,6 +151,7 @@ class User {
             jobNum: body.jobNum || '',
             password: body.password || '',
             idCard: body.idCard || '',
+            message: body.message || '',
         }
         let sql = until.update(params)
         this.connection.query(`update user set ${sql} where id=${body.id};`, (err, result) => {

@@ -1,7 +1,12 @@
 var until = {
     // 处理sql语句的查询条件
-    params (params, vague) {
+    params (params, vague, ifDoctor) {
         let count = [];
+        let doctor = ''
+        if (ifDoctor && !params.professional) {
+            delete params.professional;
+            doctor = "professional='11' or professional='12'"
+        }
         for (let key in params) {
             if (params[key]) {
                 if (vague && key === vague) {
@@ -11,10 +16,20 @@ var until = {
                 }
             }
         }
-        if (count.length == 0) {
+        if (ifDoctor && count.length == 0) {
+            return 'where '+ doctor
+        }
+        if (!ifDoctor && count.length == 0) {
             return ''
-        } else {
-            return 'where ' + count.join(' and ')
+        }
+        if (ifDoctor && count.length > 0 && !params.professional) {
+            return 'where ' + count.join(' and ') + ' and ' + doctor
+        }
+        if (ifDoctor && count.length > 0 && params.professional) {
+            return 'where ' + count.join(' and ') + doctor
+        }
+        if (!ifDoctor && count.length > 0) {
+            return 'where ' + count.join(' and ') + doctor
         }
     },
     update (params) {

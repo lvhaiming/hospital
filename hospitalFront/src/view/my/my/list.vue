@@ -4,8 +4,8 @@
         <Form :model="form" :label-width="150" ref="message" style="margin-top: 20px;" :rules="formRules">
             <Row>
                 <Col span="8">
-                    <FormItem label="用户名称" prop="name">
-                        <Input v-model="form.name" />
+                    <FormItem label="用户姓名" prop="name">
+                        <Input v-model="form.name" disabled />
                     </FormItem>
                 </Col>
                 <Col span="8">
@@ -15,55 +15,55 @@
                 </Col>
                 <Col span="8">
                     <FormItem label="年龄" prop="age">
-                        <Input v-model="form.age" />
+                        <Input v-model="form.age" disabled />
                     </FormItem>
                 </Col>
                 <Col span="8">
                     <FormItem label="性别" prop="sex">
-                        <Select clearable v-model="form.sex" style="width:150px">
+                        <Select clearable v-model="form.sex" style="width:150px" disabled>
                             <Option v-for="item in sex" :value="item.value" :key="item.value">{{ item.label }}</Option>
                         </Select>
                     </FormItem>
                 </Col>
                 <Col span="8">
                     <FormItem label="证件号" prop="idCard">
-                        <Input v-model="form.idCard" :maxlength="18" />
+                        <Input v-model="form.idCard" :maxlength="18" disabled />
                     </FormItem>
                 </Col>
                 <Col span="8" v-if="show">
                     <FormItem label="工号" prop="jobNum">
-                        <Input v-model="form.jobNum" :maxlength="8" />
+                        <Input v-model="form.jobNum" :maxlength="8" disabled />
                     </FormItem>
                 </Col>
                 <Col span="8" v-if="show">
                     <FormItem label="职称" prop="professional">
-                        <Select clearable v-model="form.professional" style="width:150px">
+                        <Select clearable v-model="form.professional" style="width:150px" disabled>
                             <Option v-for="item in professional.filter(i => { return i.value !== '99'})" :value="item.value" :key="item.value">{{ item.label }}</Option>
                         </Select>
                     </FormItem>
                 </Col>
                 <Col span="8" v-if="show">
                     <FormItem label="科室">
-                        <Select clearable v-model="form.department" style="width:150px">
+                        <Select clearable v-model="form.department" style="width:150px" disabled>
                             <Option v-for="item in department" :value="item.value" :key="item.value">{{ item.label }}</Option>
                         </Select>
                     </FormItem>
                 </Col>
                 <Col span="8" v-if="show">
                     <FormItem label="职位" prop="posts">
-                        <Select clearable v-model="form.posts" style="width:150px">
+                        <Select clearable v-model="form.posts" style="width:150px" disabled>
                             <Option v-for="item in posts" :value="item.value" :key="item.value">{{ item.label }}</Option>
                         </Select>
                     </FormItem>
                 </Col>
                 <Col span="8" v-if="show">
                     <FormItem label="入职时间" prop="time">
-                        <DatePicker v-model="form.time" type="date" :options="options" placeholder="Select date" style="width: 200px"></DatePicker>
+                        <DatePicker v-model="form.time" type="date" :options="options" placeholder="Select date" style="width: 200px" disabled></DatePicker>
                     </FormItem>
                 </Col>
                 <Col span="8" v-if="show">
                     <FormItem label="籍贯" prop="native">
-                        <Input v-model="form.native" />
+                        <Input v-model="form.native" disabled />
                     </FormItem>
                 </Col>
                 <Col span="8">
@@ -113,7 +113,7 @@ export default {
                 }
             },
             formRules: {
-                name: [{ required: true, message: '用户名称不能为空' }],
+                name: [{ required: true, message: '用户姓名不能为空' }],
                 password: [{ required: true, message: '请输入登录密码' }],
                 age: [
                     { required: true, message: '年龄不能为空' },

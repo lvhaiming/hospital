@@ -4,7 +4,7 @@
         <Form :model="form" :label-width="150" ref="message" style="margin-top: 20px;" :rules="formRules">
             <Row>
                 <Col span="8">
-                    <FormItem label="用户名称" prop="name">
+                    <FormItem label="用户姓名" prop="name">
                         <Input v-model="form.name" />
                     </FormItem>
                 </Col>
@@ -71,6 +71,15 @@
                         <Input v-model="form.native" />
                     </FormItem>
                 </Col>
+            </Row>
+            <Row>
+                <Col span="24">
+                    <FormItem label="详细信息">
+                        <Input v-model="form.message" :maxlength="255" type="textarea" />
+                    </FormItem>
+                </Col>
+            </Row>
+            <Row>
                 <Col span="8">
                     <FormItem>
                         <Button @click="cancel" style="margin-right: 20px;">
@@ -113,7 +122,8 @@ export default {
                 posts: '',
                 time: '',
                 native: '',
-                idCard: ''
+                idCard: '',
+                message: ''
             },
             options: {
                 disabledDate (date) {
@@ -121,7 +131,7 @@ export default {
                 }
             },
             formRules: {
-                name: [{ required: true, message: '用户名称不能为空' }],
+                name: [{ required: true, message: '用户姓名不能为空' }],
                 password: [{ required: true, message: '请输入登录密码' }],
                 age: [
                     { required: true, message: '年龄不能为空' },

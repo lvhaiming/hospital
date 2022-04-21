@@ -1,19 +1,16 @@
 <template>
     <section class="content">
-        <h3 class="page-title">用户管理</h3>
+        <h3 class="page-title">医生信息</h3>
         <Form :model="form" :label-width="90" inline>
-            <FormItem label="用户姓名">
+            <FormItem label="医生姓名">
                 <Input v-model="form.name" />
-            </FormItem>
-            <FormItem label="手机号码">
-                <Input v-model="form.tel" />
             </FormItem>
             <FormItem label="工号">
                 <Input v-model="form.jobNum" />
             </FormItem>
             <FormItem label="职称">
                 <Select clearable v-model="form.professional" style="width:150px">
-                    <Option v-for="item in professional.filter(i => { return i.value !== '99'})" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                    <Option v-for="item in professional.filter(i => { return i.value == '11' || i.value == '12'})" :value="item.value" :key="item.value">{{ item.label }}</Option>
                 </Select>
             </FormItem>
             <FormItem label="科室">
@@ -27,9 +24,6 @@
                 </Button>
             </FormItem>
         </Form>
-        <Button @click="add" icon="md-add" type="primary" size="small">
-            新增
-        </Button>
         <HosTable
             @changeNo="search"
             :page="page"
@@ -41,13 +35,11 @@
 
 <script>
 import { SEX, PROFESSIONAL, DEPARTMENT } from "../../../lib/enums";
-import { dateFormat } from "../../../lib/date";
 export default {
     data() {
         return {
             form: {
                 name: '',
-                tel: '',
                 jobNum: '',
                 professional: '',
                 department: ''
@@ -59,7 +51,7 @@ export default {
             },
             columns: [
                 {
-                    title: "用户姓名",
+                    title: "医生姓名",
                     key: "name",
                 },
                 {
@@ -72,10 +64,6 @@ export default {
                     render: (h, params) => {
                         return h("span", {}, SEX[params.row.sex]);
                     },
-                },
-                {
-                    title: "手机号码",
-                    key: "tel"
                 },
                 {
                     title: "工号",
@@ -100,17 +88,6 @@ export default {
                     },
                 },
                 {
-                    title: "入职时间",
-                    key: "time",
-                    render: (h, params) => {
-                        return h(
-                            "span",
-                            {},
-                            dateFormat(params.row.time, "yyyy-MM-dd")
-                        );
-                    },
-                },
-                {
                     title: "籍贯",
                     key: "native"
                 },
@@ -118,7 +95,7 @@ export default {
                     title: "操作",
                     key: "action",
                     fixed: "right",
-                    width: 130,
+                    width: 80,
                     render: (h, params) => {
                         return h("div", [
                             h(
@@ -133,27 +110,12 @@ export default {
                                     },
                                     on: {
                                         click: () => {
-                                            this.$router.push({ path: '/personnel/user/edit', query: { id: params.row.id } })
+                                            this.$router.push({ path: '/doctorMessage/message/detail', query: { id: params.row.id } })
                                         },
                                     },
                                 },
-                                "编辑"
-                            ),
-                            h(
-                                "Button",
-                                {
-                                    props: {
-                                        type: "error",
-                                        size: "small",
-                                    },
-                                    on: {
-                                        click: () => {
-                                            this.delete(params.row);
-                                        },
-                                    },
-                                },
-                                "删除"
-                            ),
+                                "查看"
+                            )
                         ]);
                     },
                 },
@@ -173,32 +135,15 @@ export default {
         this.search();
     },
     methods: {
-        add() {
-            this.$router.push('/personnel/user/add')
-        },
         search(flag) {
             if (flag) {
                 this.page.pageNumber = 1
             }
-            this.$http.post("/user/getUserData", Object.assign(this.form, this.page)).then((res) => {
+            this.$http.post("/user/getUserData", Object.assign(this.form, this.page, {ifDoctor: true})).then((res) => {
                 this.data = res.data.data;
                 this.page = res.data.page;
             });
             console.log('this.page :>> ', this.page);
-        },
-        delete(row) {
-            this.$Modal.confirm({
-                title: "提醒",
-                content: `确认删除${row.name}的信息？`,
-                cancelText: "取消",
-                onOk: () => {
-                    this.$http.post('/user/deleteUserData', { id: row.id }).then(res => {
-                        this.$Message.success(res.data.msg);
-                        // 保存成功信息提示
-                        this.search(true)
-                    }).catch(() => {})
-                },
-            });
         },
         changeData() {
             for (let key in this.DEPARTMENT) {
