@@ -61,6 +61,10 @@ export default {
                     key: "treatment"
                 },
                 {
+                    title: "用法用量",
+                    key: "uses"
+                },
+                {
                     title: "处方药",
                     key: "prescription",
                     render: (h, params) => {
