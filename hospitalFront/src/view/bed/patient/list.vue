@@ -137,6 +137,7 @@ export default {
                                                 content: `确认安排${params.row.name}出院？`,
                                                 cancelText: "取消",
                                                 onOk: () => {
+                                                    form.doctor = form.doctorId
                                                     this.$http.post('/bed/editBedData', { useName: '', useTime: '', floor: params.row.floor, room: params.row.room, bedNum: params.row.bedNum }).then((res) => {
                                                         this.$http.post('/patient/editPatientData', Object.assign(form, { bedStatus: 1, endTime: dateFormat(new Date()), floor: '', room: '', bedNum: '' })).then(res => {
                                                             this.$Message.success('已安排出院');
@@ -175,7 +176,7 @@ export default {
                 this.page.pageNumber = 1
             }
             this.form.checkStatus = '1'
-            this.form.hospitalStatus = '2'
+            this.form.hospitalStatus = '1'
             this.$http.post("/patient/getPatientData", Object.assign(this.form, this.page)).then((res) => {
                 this.data = res.data.data;
                 this.page = res.data.page;
