@@ -184,10 +184,11 @@ export default {
                 this.page.pageNumber = 1
             }
             if (!this.show) {
+                console.log('huanzhe ')
                 this.form.name = this.users.name
                 this.form.idCard = this.users.idCard
             }
-            this.$http.post("/patient/getPatientData", Object.assign(this.form, this.page)).then((res) => {
+            this.$http.post("/patient/getPatientData", Object.assign(this.form, this.page, { patientStatus: 2 })).then((res) => {
                 this.data = res.data.data;
                 this.page = res.data.page;
             });

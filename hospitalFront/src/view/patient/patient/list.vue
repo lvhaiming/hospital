@@ -134,6 +134,9 @@ export default {
                                     on: {
                                         click: () => {
                                             let form = params.row
+                                            if (form.patientStatus == 2) {
+                                                return this.$Message.error('该患者还未就诊，无法安排住院');
+                                            }
                                             if (form.hospitalStatus == 1) return
                                             this.$Modal.confirm({
                                                 title: "提醒",
