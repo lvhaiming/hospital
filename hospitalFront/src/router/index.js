@@ -32,6 +32,8 @@ import PharmacyAction from '@/view/pharmacy/pharmacy/action.vue'
 import TakeMedicine from '@/view/pharmacy/takeMedicine/list.vue'
 
 import My from '@/view/my/my/list.vue'
+import MyInfo from '@/view/my/myInfo/list.vue'
+import MyInfoAction from '@/view/my/myInfo/action.vue'
 
 import DoctorMessage from '@/view/doctorMessage/message/list.vue'
 import DoctorMessageDetail from '@/view/doctorMessage/message/action.vue'
@@ -236,6 +238,23 @@ export default new Router({
           path: '/my/my/list',
           name: 'my_my',
           component: My,
+          meta: {
+            keepAlive: true // 需要缓存
+          }
+        },
+          // 就诊记录
+        {
+          path: '/myInfo/myInfo/list',
+          name: 'my_myInfo',
+          component: MyInfo,
+          meta: {
+            keepAlive: true // 需要缓存
+          }
+        },
+        {
+          path: '/myInfo/myInfo/action',
+          name: 'my_myInfo_action',
+          component: MyInfoAction,
           meta: {
             keepAlive: true // 需要缓存
           }
