@@ -94,6 +94,13 @@ export default {
                     key: "doctor"
                 },
                 {
+                    title: "床位",
+                    key: "floor",
+                    render: (h, params) => {
+                        return h("span", {}, `${params.row.floor}-${params.row.room}-${params.row.bedNum}`);
+                    },
+                },
+                {
                     title: "操作",
                     key: "action",
                     fixed: "right",

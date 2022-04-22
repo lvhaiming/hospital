@@ -30,7 +30,8 @@
             :data="data"
         ></HosTable>
         <div class="chart" >
-            <div id="chart" style="width:60%;height: 400px;"></div>
+            <div id="chart" style="width:45%;height: 400px;"></div>
+            <div id="chart2" style="width:45%;height: 400px;"></div>
         </div>
     </section>
 </template>
@@ -161,9 +162,7 @@ export default {
     created() {
         this.search();
         this.changeData()
-        this.$nextTick(() => {
-            this.setEcharts()
-        })
+        this.initEcharts()
     },
     activated () {
         this.search();
@@ -171,6 +170,12 @@ export default {
     methods: {
         add() {
             this.$router.push({ path: '/bed/bed/add' })
+        },
+        initEcharts() {
+            this.$nextTick(() => {
+                this.setEcharts()
+                this.setEchartsPatient()
+            })
         },
         setEcharts() {
             this.$http.post("/bed/getBedAll", {}).then((res) => {
@@ -180,42 +185,122 @@ export default {
                 var option;
 
                 option = {
-                title: {
-                    text: '床位使用率',
-                    left: 'center'
-                },
-                tooltip: {
-                    trigger: 'item'
-                },
-                legend: {
-                    orient: 'vertical',
-                    left: 'left'
-                },
-                color: ['rgba(38, 230, 255, 1)', 'rgba(145, 204, 117, 0.8)'],
-                series: [
-                    {
-                        name: '使用率',
-                        type: 'pie',
-                        radius: '50%',
-                        data: [
-                            { value: data.use, name: '已使用' },
-                            { value: data.noUse, name: '未使用' },
-                        ],
-                        itemStyle:{ 
-                            normal:{ 
-                                label:{ 
-                                    show: true, 
-                                    formatter: '{b} : {c} ({d}%)' 
-                                }, 
-                                labelLine :{show:true} 
-                            } 
+                    title: {
+                        text: '床位使用率',
+                        left: 'center',
+                        textStyle: {
+                            fontSize: 14
                         }
-                    }
-                ]
+                    },
+                    tooltip: {
+                        trigger: 'item'
+                    },
+                    legend: {
+                        orient: 'vertical',
+                        left: 'left'
+                    },
+                    color: ['rgba(38, 230, 255, 1)', 'rgba(145, 204, 117, 0.8)'],
+                    series: [
+                        {
+                            name: '使用率',
+                            type: 'pie',
+                            radius: '35%',
+                            data: [
+                                { value: data.use, name: '已使用' },
+                                { value: data.noUse, name: '未使用' },
+                            ],
+                            itemStyle:{ 
+                                normal:{ 
+                                    label:{ 
+                                        show: true, 
+                                        formatter: '{b} : {c} ({d}%)' 
+                                    }, 
+                                    labelLine :{show:true} 
+                                } 
+                            }
+                        }
+                    ]
                 };
 
                 option && myChart.setOption(option);
             });
+        },
+        setEchartsPatient() {
+            this.$http.post("/patient/getPatientAll", {}).then((res) => {
+                let data = res.data.data
+                let arr = []
+                data.forEach(item => {
+                    arr.push(item.department)
+                })
+                let obj = this.getArrNum(arr)
+                let objKeys = Object.keys(obj)
+                let objValues = Object.values(obj)
+                let name = []
+                this.department.forEach(item => {
+                    objKeys.forEach(it => {
+                        if(item.value == it) {
+                            name.push(item.label)
+                        }
+                    }) 
+                })
+                let datas = []
+                name.forEach((item, index) => {
+                    datas.push({
+                        name: item,
+                        value: objValues[index]
+                    })
+                })
+                var chartDom = document.getElementById('chart2');
+                var myChart = this.$echarts.init(chartDom);
+                var option;
+
+                option = {
+                    title: {
+                        text: '住院部各科室患者人数百分比',
+                        left: 'center',
+                        textStyle: {
+                            fontSize: 14
+                        }
+                    },
+                    tooltip: {
+                        trigger: 'item'
+                    },
+                    legend: {
+                        orient: 'vertical',
+                        left: 'left'
+                    },
+                    series: [
+                        {
+                            name: '使用率',
+                            type: 'pie',
+                            radius: '35%',
+                            data: datas,
+                            itemStyle:{ 
+                                normal:{ 
+                                    label:{ 
+                                        show: true, 
+                                        formatter: '{b} : {c} ({d}%)' 
+                                    }, 
+                                    labelLine :{show:true} 
+                                } 
+                            }
+                        }
+                    ]
+                };
+
+                option && myChart.setOption(option);
+            });
+        },
+        getArrNum(arr) {
+            let obj = {}
+            arr.forEach(item => {
+                if (obj[item]) {
+                    obj[item]++
+                } else {
+                    obj[item] = 1
+                }
+            })
+            return obj
         },
         search(flag) {
             if (flag) {
@@ -246,12 +331,11 @@ export default {
 
 <style lang='less' scoped>
 .chart {
-    // border: 1px solid red;
     width: 100%;
     text-align: center;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     margin-top: 40px;
 }
 </style>

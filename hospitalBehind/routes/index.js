@@ -17,6 +17,7 @@ var getPatientData = require('./getPatient/query');
 var addPatientData = require('./getPatient/add');
 var editPatientData = require('./getPatient/edit');
 var deletePatientData = require('./getPatient/delete');
+var getPatientAll = require('./getPatient/getPatientAll');
 
 var getScheduling = require('./getScheduling/query');
 var addScheduling = require('./getScheduling/add');
@@ -55,6 +56,7 @@ app.use('/patient/getPatientData', getPatientData);
 app.use('/patient/addPatientData', addPatientData);
 app.use('/patient/editPatientData', editPatientData);
 app.use('/patient/deletePatientData', deletePatientData);
+app.use('/patient/getPatientAll', getPatientAll);
 
 app.use('/scheduling/getScheduling', getScheduling);
 app.use('/scheduling/addScheduling', addScheduling);

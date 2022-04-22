@@ -177,6 +177,21 @@ class Patient {
             }
         })
     }
+    
+    // 获取所有住院的人数
+    getPatientAll(req, res) {
+        this.connection.query(`select department from patient where bedStatus="2";`, (err, result) => {
+            if (err) {
+                console.log(err)
+            } else {
+                res.send({
+                    data: result,
+                    code: '0000',
+                    msg: '成功'
+                })
+            }
+        })
+    }
 }
 
 module.exports = Patient 
