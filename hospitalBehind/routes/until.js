@@ -5,7 +5,7 @@ var until = {
         let doctor = ''
         if (ifDoctor && !params.professional) {
             delete params.professional;
-            doctor = "professional='11' or professional='12'"
+            doctor = "(professional='11' or professional='12')"
         }
         for (let key in params) {
             if (params[key]) {

@@ -65,6 +65,7 @@ class User {
             department: body.department || ''
         }
         let sql = until.params(params, 'name', body.ifDoctor)
+        console.log('sql :>> ', sql);
         let limit =  body.pageSize ? ` limit ${start},${end};` : ''
         let p = new Promise((resolve, reject) => {
             this.connection.query(`select * from user ${sql}${limit}`, (err, result) => {

@@ -8,6 +8,7 @@ import axios from './lib/axios'
 import validate from './lib/validate'
 import importComponent from './components/index'
 import { page } from './lib/until'
+import * as echarts from 'echarts';
 
 import './css/index.less'
 import './css/content.less'
@@ -19,6 +20,7 @@ Vue.config.productionTip = false
 Vue.prototype.$page = page
 Vue.prototype.$http = axios
 Vue.prototype.$validate = validate
+Vue.prototype.$echarts = echarts
 
 /* eslint-disable no-new */
 new Vue({
