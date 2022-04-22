@@ -1,24 +1,22 @@
 <template>
     <section class="content">
-        <h3 class="page-title">用户管理</h3>
+        <h3 class="page-title">病患信息</h3>
         <Form :model="form" :label-width="90" inline>
-            <FormItem label="用户姓名">
+            <FormItem label="病患姓名">
                 <Input v-model="form.name" />
             </FormItem>
-            <FormItem label="手机号码">
-                <Input v-model="form.tel" />
-            </FormItem>
-            <FormItem label="工号">
-                <Input v-model="form.jobNum" />
-            </FormItem>
-            <FormItem label="职称">
-                <Select clearable v-model="form.professional" style="width:150px">
-                    <Option v-for="item in professional.filter(i => { return i.value !== '99'})" :value="item.value" :key="item.value">{{ item.label }}</Option>
-                </Select>
+            <FormItem label="证件号">
+                <Input v-model="form.idCard" :maxlength="18" />
             </FormItem>
             <FormItem label="科室">
                 <Select clearable v-model="form.department" style="width:150px">
                     <Option v-for="item in department" :value="item.value" :key="item.value">{{ item.label }}</Option>
+                </Select>
+            </FormItem>
+            <FormItem label="状态">
+                <Select clearable v-model="form.bedStatus" style="width:150px">
+                    <Option :value="2" key="2bed">已住院</Option>
+                    <Option :value="1" key="1ed">已出院</Option>
                 </Select>
             </FormItem>
             <FormItem>
@@ -27,9 +25,9 @@
                 </Button>
             </FormItem>
         </Form>
-        <Button @click="add" icon="md-add" type="primary" size="small">
+        <!-- <Button @click="add" icon="md-add" type="primary" size="small">
             新增
-        </Button>
+        </Button> -->
         <HosTable
             @changeNo="search"
             :page="page"
@@ -42,15 +40,15 @@
 <script>
 import { SEX, PROFESSIONAL, DEPARTMENT } from "../../../lib/enums";
 import { dateFormat } from "../../../lib/date";
+import { sessionStorage } from '@/lib/until'
 export default {
     data() {
         return {
             form: {
                 name: '',
-                tel: '',
-                jobNum: '',
-                professional: '',
-                department: ''
+                idCard: '',
+                department: '',
+                bedStatus: ''
             },
             page: {
                 pageNumber: 1,
@@ -59,38 +57,8 @@ export default {
             },
             columns: [
                 {
-                    title: "用户姓名",
-                    key: "name",
-                },
-                {
-                    title: "年龄",
-                    key: "age"
-                },
-                {
-                    title: "性别",
-                    key: "sex",
-                    render: (h, params) => {
-                        return h("span", {}, SEX[params.row.sex]);
-                    },
-                },
-                {
-                    title: "手机号码",
-                    key: "tel"
-                },
-                {
-                    title: "工号",
-                    key: "jobNum"
-                },
-                {
-                    title: "职称",
-                    key: "professional",
-                    render: (h, params) => {
-                        return h(
-                            "span",
-                            {},
-                            PROFESSIONAL[params.row.professional]
-                        );
-                    },
+                    title: "病患姓名",
+                    key: "name"
                 },
                 {
                     title: "科室",
@@ -100,25 +68,36 @@ export default {
                     },
                 },
                 {
-                    title: "入职时间",
-                    key: "time",
+                    title: "就诊时间",
+                    key: "startTime",
                     render: (h, params) => {
                         return h(
                             "span",
                             {},
-                            dateFormat(params.row.time, "yyyy-MM-dd")
+                            dateFormat(params.row.startTime, "yyyy-MM-dd")
                         );
                     },
                 },
                 {
-                    title: "籍贯",
-                    key: "native"
+                    title: "出院时间",
+                    key: "endTime",
+                    render: (h, params) => {
+                        return h(
+                            "span",
+                            {},
+                            dateFormat(params.row.endTime, "yyyy-MM-dd")
+                        );
+                    },
+                },
+                {
+                    title: "主治医师",
+                    key: "doctor"
                 },
                 {
                     title: "操作",
                     key: "action",
                     fixed: "right",
-                    width: 130,
+                    width: 170,
                     render: (h, params) => {
                         return h("div", [
                             h(
@@ -133,26 +112,44 @@ export default {
                                     },
                                     on: {
                                         click: () => {
-                                            this.$router.push({ path: '/personnel/user/edit', query: { id: params.row.id } })
+                                            if (params.row.bedStatus == 2) return
+                                            this.$router.push({ path: '/bed/patient/set', query: { id: params.row.id } })
                                         },
                                     },
                                 },
-                                "编辑"
+                                params.row.bedStatus == 1 ? "安排床位" : "已安排床位"
                             ),
                             h(
-                                "Button",
+                                params.row.bedStatus == 2 ? "Button" : '',
                                 {
                                     props: {
-                                        type: "error",
+                                        type: "primary",
                                         size: "small",
+                                    },
+                                    style: {
+                                        // marginRight: "10px",
                                     },
                                     on: {
                                         click: () => {
-                                            this.delete(params.row);
+                                            let form = params.row
+                                            this.$Modal.confirm({
+                                                title: "提醒",
+                                                content: `确认安排${params.row.name}出院？`,
+                                                cancelText: "取消",
+                                                onOk: () => {
+                                                    this.$http.post('/bed/editBedData', { useName: '', useTime: '', floor: params.row.floor, room: params.row.room, bedNum: params.row.bedNum }).then((res) => {
+                                                        this.$http.post('/patient/editPatientData', Object.assign(form, { bedStatus: 1, endTime: dateFormat(new Date()), floor: '', room: '', bedNum: '' })).then(res => {
+                                                            this.$Message.success('已安排出院');
+                                                            // 保存成功信息提示
+                                                            this.search(true)
+                                                        }).catch(() => {})
+                                                    });
+                                                },
+                                            });
                                         },
                                     },
                                 },
-                                "删除"
+                                "出院"
                             ),
                         ]);
                     },
@@ -169,34 +166,19 @@ export default {
         this.search();
         this.changeData()
     },
-    activated () {
-        this.search();
-    },
     methods: {
         add() {
-            this.$router.push('/personnel/user/add')
+            this.$router.push('/patient/patient/add')
         },
         search(flag) {
             if (flag) {
                 this.page.pageNumber = 1
             }
-            this.$http.post("/user/getUserData", Object.assign(this.form, this.page)).then((res) => {
+            this.form.checkStatus = '1'
+            this.form.hospitalStatus = '2'
+            this.$http.post("/patient/getPatientData", Object.assign(this.form, this.page)).then((res) => {
                 this.data = res.data.data;
                 this.page = res.data.page;
-            });
-        },
-        delete(row) {
-            this.$Modal.confirm({
-                title: "提醒",
-                content: `确认删除${row.name}的信息？`,
-                cancelText: "取消",
-                onOk: () => {
-                    this.$http.post('/user/deleteUserData', { id: row.id }).then(res => {
-                        this.$Message.success(res.data.msg);
-                        // 保存成功信息提示
-                        this.search(true)
-                    }).catch(() => {})
-                },
             });
         },
         changeData() {

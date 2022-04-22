@@ -120,7 +120,6 @@ export default {
                     if (this.modal) {
                         http = '/pharmacy/addPharmacyData'
                     } else {
-                        this.form.id = this.$route.query.id
                         http = '/pharmacy/editPharmacyData'
                     }
                     this.$http.post(http, this.form).then((res) => {

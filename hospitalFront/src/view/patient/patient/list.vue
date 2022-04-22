@@ -118,7 +118,7 @@ export default {
                     title: "操作",
                     key: "action",
                     fixed: "right",
-                    width: 220,
+                    width: 230,
                     render: (h, params) => {
                         return h("div", [
                             h(
@@ -133,14 +133,18 @@ export default {
                                     },
                                     on: {
                                         click: () => {
-                                            let message = params.row.hospitalStatus == 2 ? '住院' : '出院'
+                                            let form = params.row
+                                            if (form.hospitalStatus == 1) return
                                             this.$Modal.confirm({
                                                 title: "提醒",
-                                                content: `确认安排${params.row.name}${message}？`,
+                                                content: `确认安排${params.row.name}住院？`,
                                                 cancelText: "取消",
                                                 onOk: () => {
-                                                    this.$http.post("/patient/editPatientData", Object.assign({id: params.row.id, hospitalStatus: params.row.hospitalStatus == 1 ? 2 : 1 })).then((res) => {
+                                                    form.hospitalStatus = params.row.hospitalStatus == 1 ? 2 : 1
+                                                    form.doctor = params.row.doctorId
+                                                    this.$http.post("/patient/editPatientData", Object.assign(form)).then((res) => {
                                                         this.search();
+                                                        this.$Message.success('已安排住院');
                                                     })
                                                 },
                                             });
@@ -148,7 +152,7 @@ export default {
                                         },
                                     },
                                 },
-                                params.row.hospitalStatus == 1 ? '安排出院' : '安排住院'
+                                params.row.hospitalStatus == 1 ? '已安排住院' : '安排住院'
                             ),
                             h(
                                 "Button",
@@ -162,13 +166,15 @@ export default {
                                     },
                                     on: {
                                         click: () => {
+                                            let form = params.row
                                             let message = params.row.patientStatus == 2 ? '已就诊' : '更改为未就诊'
                                             this.$Modal.confirm({
                                                 title: "提醒",
                                                 content: `确认${params.row.name}${message}？`,
                                                 cancelText: "取消",
                                                 onOk: () => {
-                                                    this.$http.post("/patient/editPatientData", Object.assign({id: params.row.id, patientStatus: params.row.patientStatus == 1 ? 2 : 1 })).then((res) => {
+                                                    form.doctor = params.row.doctorId
+                                                    this.$http.post("/patient/editPatientData", Object.assign( form, { patientStatus: params.row.patientStatus == 1 ? 2 : 1 })).then((res) => {
                                                         this.search();
                                                     })
                                                 },

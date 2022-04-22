@@ -24,6 +24,7 @@ class Patient {
             drugsNum: body.drugsNum || '',
             idCard: body.idCard || '',
             patientStatus: body.patientStatus || '',
+            bedStatus: body.bedStatus || '',
         }
         let sql = until.params(params, 'name')
         let limit =  body.pageSize ? ` limit ${start},${end};` : ''
@@ -38,6 +39,7 @@ class Patient {
                                 if (err) {
                                     console.log(err)
                                 } else {
+                                    item.doctorId = item.doctor
                                     item.doctor = res[0].name
                                 }
                             })
@@ -138,6 +140,10 @@ class Patient {
             drugs: body.drugs || '',
             drugsNum: body.drugsNum || '',
             patientStatus: body.patientStatus || '',
+            room: body.room || '',
+            floor: body.floor || '',
+            bedNum: body.bedNum || '',
+            bedStatus: body.bedStatus || '',
         }
         
         let sql = until.update(params)

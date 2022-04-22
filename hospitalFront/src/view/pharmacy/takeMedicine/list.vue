@@ -92,14 +92,28 @@ export default {
                                     },
                                     on: {
                                         click: () => {
+                                            let form = params.row
                                             if (params.row.drugsStatus == 1) return
                                             this.$Modal.confirm({
                                                 title: "提醒",
                                                 content: `确认取出${params.row.name}的药品？`,
                                                 cancelText: "取消",
                                                 onOk: () => {
-                                                    this.$http.post("/patient/editPatientData", Object.assign({id: params.row.id, drugsStatus: params.row.drugsStatus == 1 ? 2 : 1 })).then((res) => {
-                                                        this.search();
+                                                    let val = Object.values(this.drugsObj)
+                                                    let key = Object.keys(this.drugsObj)
+                                                    let drugs = []
+                                                    form.drugs.forEach((item, index) => {
+                                                        let idx;
+                                                        idx = val.indexOf(item)
+                                                        drugs.push(key[idx])
+                                                    })
+                                                    form.drugs = drugs.join(',') || ''
+                                                    form.drugsNum = form.drugsNum.join(',') || ''
+                                                    this.$http.post("/patient/editPatientData", Object.assign(form, { drugsStatus: params.row.drugsStatus == 1 ? 2 : 1 })).then((res) => {
+                                                        this.$nextTick(() => {
+
+                                                            this.search();
+                                                        })
                                                         this.$Message.success('取药成功');
                                                     })
                                                 },
@@ -118,6 +132,7 @@ export default {
             DEPARTMENT,
             department: [],
             drugsObj: {},
+            drugsId: [],
         };
     },
     created() {
@@ -127,6 +142,9 @@ export default {
     methods: {
         change(drug, drugNum) {
             let msg = ``
+            if (typeof drug == 'string') {
+                drug = drug.split(',')
+            }
             drug.forEach((item,index) => {
                 if (item) {
                     msg += `${item}*${drugNum[index]}\n；`

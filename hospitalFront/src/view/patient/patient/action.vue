@@ -298,7 +298,6 @@ export default {
           if (this.modal) {
             http = "/patient/addPatientData";
           } else {
-            this.form.id = this.$route.query.id;
             http = "/patient/editPatientData";
           }
           this.$http.post(http, this.form).then((res) => {

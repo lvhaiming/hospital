@@ -38,7 +38,6 @@
                     let menu = res.data.data;
                     this.$http.post("/getPersonalTree", { professional: this.$route.query.id }).then((data) => {
                         let professional = data.data.data[0].professional_auth.split(',')
-                        console.log('professional :>> ', professional);
                         menu.map((item) => {
                             item.children.forEach(list => {
                                 if (professional.indexOf(list.id.toString()) > -1) {
@@ -48,7 +47,6 @@
                         })
                         this.data = menu
                     });
-                    console.log('menu :>> ', menu);
                 });
             },
             cancel() {
@@ -60,9 +58,7 @@
                     data.push(item.id)
                 })
                 data = data.join(',')
-                console.log(data)
                 this.$http.post("/updateAuth",{ professional: this.$route.query.id, auth: data }).then((res) => {
-                    console.log('res :>> ', res);
                     if (res.data.code === '0000') {
                         this.$Message.success(res.data.msg);
                         this.cancel()

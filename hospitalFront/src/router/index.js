@@ -38,6 +38,11 @@ import MyInfoAction from '@/view/my/myInfo/action.vue'
 import DoctorMessage from '@/view/doctorMessage/message/list.vue'
 import DoctorMessageDetail from '@/view/doctorMessage/message/action.vue'
 
+import Bed from '@/view/bed/bed/list.vue'
+import BedAction from '@/view/bed/bed/action.vue'
+import BedPatient from '@/view/bed/patient/list.vue'
+import BedPatientAction from '@/view/bed/patient/action.vue'
+
 
 
 
@@ -273,6 +278,40 @@ export default new Router({
           path: '/doctorMessage/message/detail',
           name: 'doctorMessage_message_detail',
           component: DoctorMessageDetail,
+          meta: {
+            keepAlive: true // 需要缓存
+          }
+        },
+        // 住院管理
+          // 床位管理
+        {
+          path: '/bed/bed/list',
+          name: 'bed_bed',
+          component: Bed,
+          meta: {
+            keepAlive: true // 需要缓存
+          }
+        },
+        {
+          path: '/bed/bed/:action',
+          name: 'bed_bed_action',
+          component: BedAction,
+          meta: {
+            keepAlive: true // 需要缓存
+          }
+        },
+        {
+          path: '/bed/patient/list',
+          name: 'bed_patient',
+          component: BedPatient,
+          meta: {
+            keepAlive: true // 需要缓存
+          }
+        },
+        {
+          path: '/bed/patient/:action',
+          name: 'bed_patient_action',
+          component: BedPatientAction,
           meta: {
             keepAlive: true // 需要缓存
           }

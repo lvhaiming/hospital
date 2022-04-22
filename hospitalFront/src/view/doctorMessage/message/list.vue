@@ -143,7 +143,6 @@ export default {
                 this.data = res.data.data;
                 this.page = res.data.page;
             });
-            console.log('this.page :>> ', this.page);
         },
         changeData() {
             for (let key in this.DEPARTMENT) {

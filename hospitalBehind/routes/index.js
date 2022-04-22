@@ -28,6 +28,15 @@ var addPharmacyData = require('./getPharmacy/add');
 var editPharmacyData = require('./getPharmacy/edit');
 var deletePharmacyData = require('./getPharmacy/delete');
 
+var getBedData = require('./getBed/query');
+var addBedData = require('./getBed/add');
+var editBedData = require('./getBed/edit');
+var deleteBedData = require('./getBed/delete');
+var getBedAll = require('./getBed/getBedAll');
+var getFloor = require('./getBed/getFloor');
+var getRoom = require('./getBed/getRoom');
+var getBedNum = require('./getBed/getBedNum');
+
 
 app.use('/login', login);
 
@@ -56,5 +65,14 @@ app.use('/pharmacy/getPharmacyData', getPharmacyData);
 app.use('/pharmacy/addPharmacyData', addPharmacyData);
 app.use('/pharmacy/editPharmacyData', editPharmacyData);
 app.use('/pharmacy/deletePharmacyData', deletePharmacyData);
+
+app.use('/bed/getBedData', getBedData);
+app.use('/bed/addBedData', addBedData);
+app.use('/bed/editBedData', editBedData);
+app.use('/bed/deleteBedData', deleteBedData);
+app.use('/bed/getBedAll', getBedAll);
+app.use('/bed/getFloor', getFloor);
+app.use('/bed/getRoom', getRoom);
+app.use('/bed/getBedNum', getBedNum);
 
 module.exports = app;

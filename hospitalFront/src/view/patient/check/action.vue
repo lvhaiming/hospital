@@ -195,7 +195,6 @@ export default {
             this.form.checkStatus = '1'
             http = "/patient/addPatientData";
           } else {
-            this.form.id = this.$route.query.id;
             http = "/patient/editPatientData";
           }
           this.$http.post(http, this.form).then((res) => {

@@ -151,7 +151,6 @@ export default {
                         this.form.time = dateFormat(this.form.time)
                     }
                     let http = ''
-                    this.form.id = this.users.id
                     http = '/user/editUserData'
                     this.$http.post(http, this.form).then((res) => {
                         if (res.data.code === '0000') {

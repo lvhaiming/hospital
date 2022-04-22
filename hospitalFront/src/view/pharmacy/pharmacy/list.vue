@@ -137,7 +137,6 @@ export default {
     activated () {
         this.search();
         this.users = sessionStorage.get('hospital_user')
-        console.log('this.idShow :>> ', this.idShow);
     },
     computed: {
        isShow() {
@@ -156,7 +155,6 @@ export default {
                 this.data = res.data.data;
                 this.page = res.data.page;
             });
-            console.log('this.page :>> ', this.page);
         },
         delete(row) {
             this.$Modal.confirm({
